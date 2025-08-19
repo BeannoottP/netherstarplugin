@@ -44,9 +44,11 @@ public class EventListener implements Listener {
         }
     }
     
-
     public static void onPlayerDeath(PlayerDeathEvent event) {
-
+        if(event.getEntity() == NetherStar.NSPLAYER) {
+            Bukkit.broadcastMessage(NetherStar.NSPLAYER.getAsString() + " has died with the nether star at " + event.getEntity().getLocation().toString() + " in the " + event.getEntity().getWorld().getEnvironment().name());
+            NetherStar.NSPLAYER = null;
+        }
     }
 
 }

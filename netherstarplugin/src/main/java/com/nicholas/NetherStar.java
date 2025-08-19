@@ -18,6 +18,13 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 /*
  * netherstarplugin java plugin
+ * TODO
+ * Compass on spawn, compass on respawn
+ * Nether tracking
+ * Perminance
+ * Potion effects
+ * Portal listener
+ * 5 tick sanity checker
  */
 public class NetherStar extends JavaPlugin
 {

@@ -15,7 +15,7 @@
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
     <property name="user.country" value="US"/>
     <property name="sun.boot.library.path" value="C:\Program Files\Eclipse Adoptium\jdk-21.0.8.9-hotspot\bin"/>
-    <property name="sun.java.command" value="C:\Users\benne\AppData\Local\Temp\surefire9462898638936744428\surefirebooter17537880496062863435.jar C:\Users\benne\AppData\Local\Temp\surefire9462898638936744428 2025-08-18T20-49-23_443-jvmRun1 surefire885449313167833546tmp surefire_017333266382113248896tmp"/>
+    <property name="sun.java.command" value="C:\Users\benne\AppData\Local\Temp\surefire330813772687270991\surefirebooter8839111532064670575.jar C:\Users\benne\AppData\Local\Temp\surefire330813772687270991 2025-08-18T23-50-07_825-jvmRun1 surefire7950647162474822600tmp surefire_017499109411261259853tmp"/>
     <property name="jdk.debug" value="release"/>
     <property name="surefire.test.class.path" value="c:\Users\benne\Desktop\Personal Projects\netherstarplugin\netherstarplugin\target\test-classes;c:\Users\benne\Desktop\Personal Projects\netherstarplugin\netherstarplugin\target\classes;C:\Users\benne\.m2\repository\junit\junit\4.11\junit-4.11.jar;C:\Users\benne\.m2\repository\org\hamcrest\hamcrest-core\1.3\hamcrest-core-1.3.jar;C:\Users\benne\.m2\repository\org\spigotmc\spigot-api\1.21.5-R0.1-SNAPSHOT\spigot-api-1.21.5-R0.1-SNAPSHOT.jar;C:\Users\benne\.m2\repository\com\google\guava\guava\33.3.1-jre\guava-33.3.1-jre.jar;C:\Users\benne\.m2\repository\com\google\guava\failureaccess\1.0.2\failureaccess-1.0.2.jar;C:\Users\benne\.m2\repository\com\google\guava\listenablefuture\9999.0-empty-to-avoid-conflict-with-guava\listenablefuture-9999.0-empty-to-avoid-conflict-with-guava.jar;C:\Users\benne\.m2\repository\com\google\code\findbugs\jsr305\3.0.2\jsr305-3.0.2.jar;C:\Users\benne\.m2\repository\org\checkerframework\checker-qual\3.43.0\checker-qual-3.43.0.jar;C:\Users\benne\.m2\repository\com\google\errorprone\error_prone_annotations\2.28.0\error_prone_annotations-2.28.0.jar;C:\Users\benne\.m2\repository\com\google\j2objc\j2objc-annotations\3.0.0\j2objc-annotations-3.0.0.jar;C:\Users\benne\.m2\repository\com\google\code\gson\gson\2.11.0\gson-2.11.0.jar;C:\Users\benne\.m2\repository\org\joml\joml\1.10.8\joml-1.10.8.jar;C:\Users\benne\.m2\repository\net\md-5\bungeecord-chat\1.21-R0.2\bungeecord-chat-1.21-R0.2.jar;C:\Users\benne\.m2\repository\org\yaml\snakeyaml\2.2\snakeyaml-2.2.jar;"/>
     <property name="sun.cpu.endian" value="little"/>
@@ -30,7 +30,7 @@
     <property name="line.separator" value="&#10;"/>
     <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
     <property name="java.specification.name" value="Java Platform API Specification"/>
-    <property name="surefire.real.class.path" value="C:\Users\benne\AppData\Local\Temp\surefire9462898638936744428\surefirebooter17537880496062863435.jar"/>
+    <property name="surefire.real.class.path" value="C:\Users\benne\AppData\Local\Temp\surefire330813772687270991\surefirebooter8839111532064670575.jar"/>
     <property name="user.script" value=""/>
     <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
     <property name="java.runtime.version" value="21.0.8+9-LTS"/>
@@ -59,5 +59,5 @@
     <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
     <property name="java.class.version" value="65.0"/>
   </properties>
-  <testcase name="shouldAnswerWithTrue" classname="com.nicholas.PluginTest" time="0.009"/>
+  <testcase name="shouldAnswerWithTrue" classname="com.nicholas.PluginTest" time="0"/>
 </testsuite>

@@ -2,6 +2,8 @@ package com.nicholas;
 
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import org.bukkit.command.Command;
@@ -21,17 +23,19 @@ public class Commands implements CommandExecutor, TabExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-      if(args.length == 1 && args[1].equalsIgnoreCase("start")) {
+      if(args.length == 1 && args[0].equalsIgnoreCase("start")) {
         plugin.startPlugin();
         return true;
        }
-        return false;
+        return true;
     }
 
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'onTabComplete'");
+        if (args.length == 1) {
+            return Arrays.asList("start", "stop");
+        }
+        return Collections.emptyList();
     }
 
 }

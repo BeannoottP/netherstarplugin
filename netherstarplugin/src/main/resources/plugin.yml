@@ -1,5 +1,5 @@
 name: netherstarplugin
-main: com.nicholas.Plugin
+main: com.nicholas.NetherStar
 version: 1.0-SNAPSHOT
 api-version: 1.21.5
 
@@ -9,16 +9,9 @@ permissions:
     default: op
 
 commands:
-  command:
-    description: "Starts the plugin"
-    usage: "/netherstar [start]"
+  netherstar:
+    description: "Starts or stops the plugin"
+    usage: "/<command> [start/stop]"
     aliases: [ns]
     permission: permission.op
-    permission-message: "You dod not have permission to use this command"
-  command:
-    description: "Stops the plugin"
-    usage: "/netherstar [stop]"
-    aliases: [ns]
-    permission: permission.op
-    permission-message: "You dod not have permission to use this command"
-    
+    permission-message: "You do not have permission to use this command"
