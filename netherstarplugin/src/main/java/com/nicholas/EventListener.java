@@ -18,7 +18,9 @@ public class EventListener implements Listener {
         if (NetherStar.NSPLAYER == null || NetherStar.NSLOCATION == null) {return;}
         
         if (event.getPlayer() != NetherStar.NSPLAYER) {
-            event.getPlayer().setCompassTarget(NetherStar.NSLOCATION);
+            for (Player p : Bukkit.getServer().getOnlinePlayers()) {
+                p.setCompassTarget(NetherStar.NSLOCATION);
+            }
             return;
         }
         if (event.getPlayer().getWorld().getEnvironment() == Environment.NETHER) {
@@ -39,14 +41,17 @@ public class EventListener implements Listener {
         if (event.getEntityType() != EntityType.PLAYER) {return;}
         
         if (event.getItem().getItemStack().getType() == Material.NETHER_STAR) {
-            NetherStar.NSPLAYER = (Player) event.getEntity();   
-            Bukkit.broadcastMessage(NetherStar.NSPLAYER.getAsString() + " has picked up the nether star at " + NetherStar.NSPLAYER.getLocation().toString() + " in the " + NetherStar.NSPLAYER.getWorld().getEnvironment().name());
+            NetherStar.NSPLAYER = (Player) event.getEntity();
+            //NICK FIX LOGIC HERE   
+            Bukkit.broadcastMessage(NetherStar.NSPLAYER.getName() + " has picked up the nether star at " + NetherStar.NSPLAYER.getLocation().getX() + " " + NetherStar.NSPLAYER.getLocation().getY() +  " " + NetherStar.NSPLAYER.getLocation().getZ() + " in the " + NetherStar.NSPLAYER.getWorld().getEnvironment().name());
         }
     }
     
+    @EventHandler
     public static void onPlayerDeath(PlayerDeathEvent event) {
         if(event.getEntity() == NetherStar.NSPLAYER) {
-            Bukkit.broadcastMessage(NetherStar.NSPLAYER.getAsString() + " has died with the nether star at " + event.getEntity().getLocation().toString() + " in the " + event.getEntity().getWorld().getEnvironment().name());
+            //NICK FIX LOGIC HERE  
+            Bukkit.broadcastMessage(NetherStar.NSPLAYER.getName() + " has died with the nether star at " + event.getEntity().getLocation().toString() + " in the " + event.getEntity().getWorld().getEnvironment().name());
             NetherStar.NSPLAYER = null;
         }
     }
