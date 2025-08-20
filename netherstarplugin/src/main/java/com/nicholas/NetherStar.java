@@ -8,6 +8,7 @@ import java.util.logging.Logger;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
@@ -20,19 +21,25 @@ import org.bukkit.plugin.java.JavaPlugin;
  * netherstarplugin java plugin
  * TODO
  * Compass on spawn, compass on respawn - nick
- * Nether tracking
+ *    Im going to have some stuff for point perminance in onPlayerJoin, will probably want to put some of this logic in there
  * POINT STORING
  * Perminance
  * Potion effects - nick
- * Portal listener
  * 5 tick sanity checker
+ * Chest interaction with nether star? - nick
  */
 public class NetherStar extends JavaPlugin
 {
+  //sends message to console
   private static final Logger LOGGER = Logger.getLogger("NetherStarPlugin");
+
+  //point key
+  public static final NamespacedKey POINT_KEY = new NamespacedKey(getPlugin(NetherStar.class), "Points");
   
+  //the player currently holding the nether star. should only be null if no one is holding nether star
   public static Player NSPLAYER = null;
 
+  //the location compass points to. NOTE: NOT ALWAYS LOCATION OF NS PLAYER due to different dimensions, sometimes last portal used
   public static Location NSLOCATION = null;
 
   public void onEnable()
