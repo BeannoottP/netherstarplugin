@@ -42,7 +42,7 @@ import org.bukkit.plugin.java.JavaPlugin;
  * change chest logic to check if inventory is not player inventory
  * donkey chest
  * prevent hotbar
- * 
+ * prevent compass stacking
  */
 public class NetherStar extends JavaPlugin
 {
