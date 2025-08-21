@@ -1,4 +1,8 @@
 package com.nicholas;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.World.Environment;
@@ -36,6 +40,9 @@ public class EventListener implements Listener {
 
     //used to check if ns player opens chest or storage
     public static boolean isStorage = false;
+
+    //used to store items for what the nether star can be stored in
+    private static List<Material> storageitems = new ArrayList<>(Arrays.asList(Material.CHEST, Material.TRAPPED_CHEST, Material.ENDER_CHEST, Material.HOPPER, Material.CHEST_MINECART, Material.HOPPER_MINECART, Material.SHULKER_BOX, Material.DISPENSER, Material.DROPPER, Material.CRAFTING_TABLE, Material.FURNACE, Material.BLAST_FURNACE, Material.SMOKER, Material.BARREL, Material.BREWING_STAND));
 
     @EventHandler
     public static void onPlayerMove(PlayerMoveEvent event) {
@@ -84,7 +91,6 @@ public class EventListener implements Listener {
             Bukkit.broadcastMessage(NetherStar.NSPLAYER.getName() + " has died with the nether star at " + event.getEntity().getLocation().toString() + " in the " + event.getEntity().getWorld().getEnvironment().name());
             plugin.clearPotionEffects();
             NetherStar.NSPLAYER = null;
-
         }
     }
 
@@ -115,51 +121,12 @@ public class EventListener implements Listener {
 
     //checks if nether star player clicks a chest or storage block in order to stop them from placing it in there
     @EventHandler
-    public static void onChestClick(PlayerInteractEvent event) {
+    public static void onChestClick(PlayerInteractEvent event) {   
         if(event.getPlayer().equals(NetherStar.NSPLAYER)) {
-            //switch cases arent used here because i couldn't get them to work with these data types
-            
-            
             if(event.getClickedBlock() == null) {
                 return;
             }
-            else if(event.getClickedBlock().getType() == Material.CHEST) {
-                isStorage = true;
-            }
-            else if(event.getClickedBlock().getType() == Material.TRAPPED_CHEST) {
-                isStorage = true;
-            }
-            else if(event.getClickedBlock().getType() == Material.ENDER_CHEST) {
-                isStorage = true;
-            }
-            else if(event.getClickedBlock().getType() == Material.HOPPER) {
-                isStorage = true;
-            }
-            else if(event.getClickedBlock().getType() == Material.CHEST_MINECART) {
-                isStorage = true;
-            }
-            else if(event.getClickedBlock().getType() == Material.HOPPER_MINECART) {
-                isStorage = true;
-            }
-            else if(event.getClickedBlock().getType() == Material.SHULKER_BOX) {
-                isStorage = true;
-            }
-            else if(event.getClickedBlock().getType() == Material.DISPENSER) {
-                isStorage = true;
-            }
-            else if(event.getClickedBlock().getType() == Material.DROPPER) {
-                isStorage = true;
-            }
-            else if(event.getClickedBlock().getType() == Material.CRAFTING_TABLE) {
-                isStorage = true;
-            }
-            else if(event.getClickedBlock().getType() == Material.BLAST_FURNACE) {
-                isStorage = true;
-            }
-            else if(event.getClickedBlock().getType() == Material.SMOKER) {
-                isStorage = true;
-            }
-            else if(event.getClickedBlock().getType() == Material.BARREL) {
+            else if(storageitems.contains(event.getClickedBlock().getType())) {
                 isStorage = true;
             }
             else {
