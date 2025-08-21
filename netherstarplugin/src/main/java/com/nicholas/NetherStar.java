@@ -37,6 +37,12 @@ import org.bukkit.plugin.java.JavaPlugin;
  * FIX POINT KEY
  * Figure out how to use switch cases for storage items
  * Make it so people can only have 1 compass at a time - DONE
+ * Prevent nether star burning in lava onentitycombustion
+ * Prevent nether star despawning, teleport to world spawn or give to random person
+ * change chest logic to check if inventory is not player inventory
+ * donkey chest
+ * prevent hotbar
+ * 
  */
 public class NetherStar extends JavaPlugin
 {
