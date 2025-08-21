@@ -36,7 +36,7 @@ import org.bukkit.plugin.java.JavaPlugin;
  * Stylize broadcast messages
  * FIX POINT KEY
  * Figure out how to use switch cases for storage items
- * Make it so people can only have 1 compass at a time
+ * Make it so people can only have 1 compass at a time - DONE
  */
 public class NetherStar extends JavaPlugin
 {
@@ -52,6 +52,9 @@ public class NetherStar extends JavaPlugin
 
   //the location compass points to. NOTE: NOT ALWAYS LOCATION OF NS PLAYER due to different dimensions, sometimes last portal used
   public static Location NSLOCATION = null;
+
+  //temp hard coded variable for enabling/disabling points. if we publish this we should make this a user set config
+  public static boolean enablePoints = false;
 
   //used to run methods in singletonlogic class
   private SingletonLogic plugin = SingletonLogic.getInstance();

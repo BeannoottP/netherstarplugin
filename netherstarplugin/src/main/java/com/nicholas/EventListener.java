@@ -118,6 +118,8 @@ public class EventListener implements Listener {
     public static void onChestClick(PlayerInteractEvent event) {
         if(event.getPlayer().equals(NetherStar.NSPLAYER)) {
             //switch cases arent used here because i couldn't get them to work with these data types
+            
+            
             if(event.getClickedBlock() == null) {
                 return;
             }
@@ -189,6 +191,8 @@ public class EventListener implements Listener {
     //gives compass on player join
     @EventHandler
     public static void onPlayerJoin(PlayerJoinEvent event) {
+        if (event.getPlayer().getInventory().contains(Material.COMPASS)) {return;}
+        
         event.getPlayer().getInventory().addItem(new ItemStack(Material.COMPASS));
     }
 
