@@ -2,6 +2,7 @@ package com.nicholas;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.World.Environment;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -11,6 +12,13 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerPortalEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.event.player.PlayerRespawnEvent;
+import org.bukkit.event.inventory.CraftItemEvent;
+
 
 public class EventListener implements Listener {
 
@@ -22,6 +30,13 @@ public class EventListener implements Listener {
      * For Holder: If in not overworld, do nothing
      * otherwise update nether star location to current location
      */
+
+    //used to run methods from singletonlogic class
+    private static SingletonLogic plugin = SingletonLogic.getInstance();
+
+    //used to check if ns player opens chest or storage
+    public static boolean isStorage = false;
+
     @EventHandler
     public static void onPlayerMove(PlayerMoveEvent event) {
         if (NetherStar.NSLOCATION == null) {return;}
@@ -56,6 +71,7 @@ public class EventListener implements Listener {
         if (event.getItem().getItemStack().getType() == Material.NETHER_STAR) {
             NetherStar.NSPLAYER = (Player) event.getEntity();
             //NICK FIX LOGIC HERE   
+            plugin.potionEffects();
             Bukkit.broadcastMessage(NetherStar.NSPLAYER.getName() + " has picked up the nether star at " + NetherStar.NSPLAYER.getLocation().getX() + " " + NetherStar.NSPLAYER.getLocation().getY() +  " " + NetherStar.NSPLAYER.getLocation().getZ() + " in the " + NetherStar.NSPLAYER.getWorld().getEnvironment().name());
         }
     }
@@ -66,7 +82,9 @@ public class EventListener implements Listener {
         if(event.getEntity() == NetherStar.NSPLAYER) {
             //NICK FIX LOGIC HERE  
             Bukkit.broadcastMessage(NetherStar.NSPLAYER.getName() + " has died with the nether star at " + event.getEntity().getLocation().toString() + " in the " + event.getEntity().getWorld().getEnvironment().name());
+            plugin.clearPotionEffects();
             NetherStar.NSPLAYER = null;
+
         }
     }
 
@@ -92,8 +110,100 @@ public class EventListener implements Listener {
             NetherStar.NSLOCATION = event.getFrom();
             return;
         }
+    }
 
 
+    //checks if nether star player clicks a chest or storage block in order to stop them from placing it in there
+    @EventHandler
+    public static void onChestClick(PlayerInteractEvent event) {
+        if(event.getPlayer().equals(NetherStar.NSPLAYER)) {
+            //switch cases arent used here because i couldn't get them to work with these data types
+            if(event.getClickedBlock() == null) {
+                return;
+            }
+            else if(event.getClickedBlock().getType() == Material.CHEST) {
+                isStorage = true;
+            }
+            else if(event.getClickedBlock().getType() == Material.TRAPPED_CHEST) {
+                isStorage = true;
+            }
+            else if(event.getClickedBlock().getType() == Material.ENDER_CHEST) {
+                isStorage = true;
+            }
+            else if(event.getClickedBlock().getType() == Material.HOPPER) {
+                isStorage = true;
+            }
+            else if(event.getClickedBlock().getType() == Material.CHEST_MINECART) {
+                isStorage = true;
+            }
+            else if(event.getClickedBlock().getType() == Material.HOPPER_MINECART) {
+                isStorage = true;
+            }
+            else if(event.getClickedBlock().getType() == Material.SHULKER_BOX) {
+                isStorage = true;
+            }
+            else if(event.getClickedBlock().getType() == Material.DISPENSER) {
+                isStorage = true;
+            }
+            else if(event.getClickedBlock().getType() == Material.DROPPER) {
+                isStorage = true;
+            }
+            else if(event.getClickedBlock().getType() == Material.CRAFTING_TABLE) {
+                isStorage = true;
+            }
+            else if(event.getClickedBlock().getType() == Material.BLAST_FURNACE) {
+                isStorage = true;
+            }
+            else if(event.getClickedBlock().getType() == Material.SMOKER) {
+                isStorage = true;
+            }
+            else if(event.getClickedBlock().getType() == Material.BARREL) {
+                isStorage = true;
+            }
+            else {
+                isStorage = false;
+            }
+        }
+    }
+
+    //checks if the ns player clicks on the ns and isStorage is true to stop them from moving it into the chest
+    @EventHandler
+    public static void onInventoryNetherStarClick(InventoryClickEvent event) {
+        if(event.getCurrentItem().getType() == null) {
+            return;
+        }
+        else if(event.getWhoClicked().equals(NetherStar.NSPLAYER) && event.getCurrentItem().getType().equals(Material.NETHER_STAR) && isStorage) {
+            event.setCancelled(true);
+            Bukkit.broadcastMessage("You can't move the Nether Star in a chest");
+        }
+    }
+
+    //resets the chest bool so that they can move the nether star after closing inventory
+    @EventHandler
+    public static void onInventoryNetherStarClose(InventoryCloseEvent event) {
+        if(event.getPlayer().equals(NetherStar.NSPLAYER) && isStorage) {
+            isStorage = false;
+        }
+    }
+
+    //gives compass on player join
+    @EventHandler
+    public static void onPlayerJoin(PlayerJoinEvent event) {
+        event.getPlayer().getInventory().addItem(new ItemStack(Material.COMPASS));
+    }
+
+    //gives compass on player respawn
+    @EventHandler
+    public static void onPlayerDeath(PlayerRespawnEvent event) {
+        event.getPlayer().getInventory().addItem(new ItemStack(Material.COMPASS));
+    }
+
+    //Stops players from crafting a beacon
+    @EventHandler
+    public static void onBeaconCraft(CraftItemEvent event) {
+        if(event.getRecipe().getResult().getType() == Material.BEACON) {
+            event.setCancelled(true);
+        }
     }
 
 }
