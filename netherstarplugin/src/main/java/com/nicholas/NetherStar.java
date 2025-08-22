@@ -9,6 +9,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
+import org.bukkit.Sound;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
@@ -22,45 +23,35 @@ import org.bukkit.plugin.java.JavaPlugin;
 /*
  * netherstarplugin java plugin
  * TODO
- * Compass on spawn, compass on respawn - nick DONE DONE DONE
- *    Im going to have some stuff for point perminance in onPlayerJoin, will probably want to put some of this logic in there
- * POINT STORING
- * Perminance
- * Potion effects - nick DONE DONE DONE
- * 5 tick sanity checker, check if nether star is inventory every 5 ticks
- * Chest interaction with nether star? - nick DONE DONE DONE
- * Crafting Prevention - DONE DONE DONE
+ * 5 tick sanity checker, check if nether star is inventory every 5 ticks 
  * Timed item drops - DONE DONE DONE
  * Sound effects
  * Fix broadcast messages of coordinates
  * Stylize broadcast messages
- * FIX POINT KEY
- * Figure out how to use switch cases for storage items
- * Make it so people can only have 1 compass at a time - DONE
- * Prevent nether star burning in lava onentitycombustion
  * Prevent nether star despawning, teleport to world spawn or give to random person
  * change chest logic to check if inventory is not player inventory
  * donkey chest
  * prevent hotbar
- * prevent compass stacking
+ * prevent compass stacking - DONE
+ * Loot drop revamp? Loottable class
+ * /top command (because mining up sucks and wastes time) (maybe make it so you cant use /top if you are nearby other players?)
  */
 public class NetherStar extends JavaPlugin
 {
   //sends message to console
-  private static final Logger LOGGER = Logger.getLogger("NetherStarPlugin");
-
-  //point key
-  //this line currently causes the plugin to fail, due to static implementatin of nether star class
-  //public static final NamespacedKey POINT_KEY = new NamespacedKey(getPlugin(NetherStar.class), "Points");
+  public static final Logger LOGGER = Logger.getLogger("NetherStarPlugin");
   
+  //sounds
+  public static final Sound firework = Sound.ENTITY_FIREWORK_ROCKET_LARGE_BLAST;
+  public static final Sound witherDeath = Sound.ENTITY_WITHER_DEATH;
+  public static final Sound ding = Sound.ENTITY_EXPERIENCE_ORB_PICKUP;
+  public static final Sound portal = Sound.BLOCK_PORTAL_TRIGGER;
+
   //the player currently holding the nether star. should only be null if no one is holding nether star
   public static Player NSPLAYER = null;
 
   //the location compass points to. NOTE: NOT ALWAYS LOCATION OF NS PLAYER due to different dimensions, sometimes last portal used
   public static Location NSLOCATION = null;
-
-  //temp hard coded variable for enabling/disabling points. if we publish this we should make this a user set config
-  public static boolean enablePoints = false;
 
   //used to run methods in singletonlogic class
   private SingletonLogic plugin = SingletonLogic.getInstance();
@@ -121,20 +112,19 @@ public class NetherStar extends JavaPlugin
     plugin.potionEffects();
   }
 
-  //MOVED TO SINGLETON LOGIC
-  /*public void potionEffects() {
-    if(NSPLAYER != null) {
-      NSPLAYER.addPotionEffect(new PotionEffect(PotionEffectType.ABSORPTION, 30, 1, true));
-    }
-
-  }*/
-
-
   // if this is broken then god save us all
   private void loadListeners(Listener... listeners) {
     for (Listener listener : listeners) {
       Bukkit.getPluginManager().registerEvents(listener, this);
     }
+  }
+
+  public static void playSoundGlobal(Sound sound) {
+    Bukkit.getServer().getOnlinePlayers().forEach(p -> playSoundPlayer(p, sound));
+  }
+
+  public static void playSoundPlayer(Player p, Sound sound) {
+    p.playSound(p, sound, 1, 0);
   }
 
 

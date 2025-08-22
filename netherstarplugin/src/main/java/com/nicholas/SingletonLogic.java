@@ -5,7 +5,9 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import static org.bukkit.potion.PotionEffect.INFINITE_DURATION;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.inventory.ItemStack;
 
 //THIS CLASS WAS CREATED TO RUN ANY LOGIC THAT NEEDS TO GO BETWEEN CLASSES
@@ -63,4 +65,5 @@ public class SingletonLogic {
             NetherStar.NSPLAYER.getInventory().addItem(new ItemStack(Material.GOLDEN_APPLE));
         }
     }
+
 }
