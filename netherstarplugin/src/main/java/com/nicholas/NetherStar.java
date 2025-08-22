@@ -26,18 +26,29 @@ import org.bukkit.plugin.java.JavaPlugin;
 /*
  * netherstarplugin java plugin
  * TODO
- * 5 tick sanity checker, check if nether star is inventory every 5 ticks 
+ * 5 tick sanity checker, check if nether star is inventory every 5 ticks - SHOULD BE WORKING but could be optimized more
  * Timed item drops - DONE DONE DONE
- * Sound effects
- * Fix broadcast messages of coordinates
- * Stylize broadcast messages
- * Prevent nether star despawning, teleport to world spawn or give to random person
- * change chest logic to check if inventory is not player inventory
- * donkey chest
- * prevent hotbar
+ * Sound effects - maybe change to beacon startup
+ * Fix broadcast messages of coordinates - DONE
+ * Stylize broadcast messages - colors are done bold is not done
+ * Prevent nether star despawning, teleport to world spawn or give to random person - BROKEN
+ * change chest logic to check if inventory is not player inventory - DONE
+ * donkey chest - DONE
+ * prevent hotbar - DONE
  * prevent compass stacking - DONE
  * Loot drop revamp? Loottable class
  * /top command (because mining up sucks and wastes time) (maybe make it so you cant use /top if you are nearby other players?)
+ * 
+ * BIG THINGS
+ * Get nether and nether compasses working
+ * Do limit testing and bug testing to make sure everything is working
+ * Do performance testing to see how bad lag is
+ * Figure out how to structure game (loot drops, stages, world border)
+ * 
+ * Things to possibly add
+ * World border
+ * Win condition + sudden death?
+ * 
  */
 public class NetherStar extends JavaPlugin
 {
@@ -99,7 +110,7 @@ public class NetherStar extends JavaPlugin
       public void run() {
         plugin.sanityChecker();
       }
-    }, 0, 20);
+    }, 0, 100);
 
     //these 3 schedulers drop items and cancel the previous schedule when the new one is running
     //figure out better way to implement cancelation so it doesn't try to cancel multiple times in upcoming schedulers

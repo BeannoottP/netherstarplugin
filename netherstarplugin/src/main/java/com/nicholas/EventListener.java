@@ -111,7 +111,7 @@ public class EventListener implements Listener {
             int y_coord = event.getEntity().getLocation().getBlockY();
             int z_coord = event.getEntity().getLocation().getBlockZ();
             String dimension = event.getEntity().getWorld().getEnvironment().name();
-            Bukkit.broadcastMessage(ChatColor.of(Color.CYAN) + NetherStar.NSPLAYER.getName() + ChatColor.of(Color.WHITE) + " has died with the nether star at " + ChatColor.of(Color.RED) + x_coord + ", " + y_coord + ", " + z_coord + ChatColor.of(Color.WHITE) + " in the " + ChatColor.of(Color.CYAN) + plugin.dimensionchange(dimension) + ".");
+            Bukkit.broadcastMessage(ChatColor.of(Color.CYAN) + NetherStar.NSPLAYER.getName() + ChatColor.of(Color.WHITE) + " has picked up the nether star at " + ChatColor.of(Color.RED) + x_coord + ", " + y_coord + ", " + z_coord + ChatColor.of(Color.WHITE) + " in the " + ChatColor.of(Color.CYAN) + plugin.dimensionchange(dimension) + ".");
             return;
         }
         if (event.getItem().getItemStack().getType() == Material.COMPASS) {
@@ -125,14 +125,14 @@ public class EventListener implements Listener {
     @EventHandler
     public static void onPlayerDeath(PlayerDeathEvent event) {
         if(event.getEntity() == NetherStar.NSPLAYER) {
-            //NICK FIX LOGIC HERE 
             NetherStar.playSoundGlobal(NetherStar.witherDeath); 
             int x_coord = event.getEntity().getLocation().getBlockX();
             int y_coord = event.getEntity().getLocation().getBlockY();
             int z_coord = event.getEntity().getLocation().getBlockZ();
             String dimension = event.getEntity().getWorld().getEnvironment().name();
             Bukkit.broadcastMessage(ChatColor.of(Color.CYAN) + NetherStar.NSPLAYER.getName() + ChatColor.of(Color.WHITE) + " has died with the nether star at " + ChatColor.of(Color.RED) + x_coord + ", " + y_coord + ", " + z_coord + ChatColor.of(Color.WHITE) + " in the " + ChatColor.of(Color.CYAN) + plugin.dimensionchange(dimension) + ".");
-            event.getEntity().getWorld().setChunkForceLoaded(event.getEntity().getLocation().getBlockX(),event.getEntity().getLocation().getBlockZ() , true);       
+            event.getEntity().getWorld().setChunkForceLoaded(event.getEntity().getLocation().getBlockX(),event.getEntity().getLocation().getBlockZ() , true);
+            plugin.clearPotionEffects();     
             NetherStar.NSPLAYER = null;
         }
     }
@@ -183,6 +183,8 @@ public class EventListener implements Listener {
     @EventHandler
     public static void onInventoryOpen(InventoryOpenEvent event) {
         if (event.getPlayer() == NetherStar.NSPLAYER) {
+            
+            
             Inventory opened_inv = event.getInventory();
             if (opened_inv.getType().toString().equals("PLAYER")) {return;}
             else {
@@ -195,7 +197,9 @@ public class EventListener implements Listener {
     @EventHandler
     public static void onInventoryNetherStarClick(InventoryClickEvent event) {
         if (event.getWhoClicked() != NetherStar.NSPLAYER) {return;}
-
+        // i dont know if using an if statement here is more optimized or not
+        // if(event.getCurrentItem.getType.equals(Material.NETHER_STAR)) {plugin.sanityCheckDisable = true;}
+        plugin.sanityCheckDisable = true;
         if (event.getHotbarButton() != -1 && isStorage) {
             if(event.getWhoClicked().getInventory().getItem(event.getHotbarButton()) == null) {return;}
             ItemStack hotbaritem = event.getWhoClicked().getInventory().getItem(event.getHotbarButton());
@@ -235,6 +239,7 @@ public class EventListener implements Listener {
     @EventHandler
     public static void onInventoryNetherStarClose(InventoryCloseEvent event) {
         if(event.getPlayer().equals(NetherStar.NSPLAYER) && isStorage) {
+            plugin.sanityCheckDisable = false;
             isStorage = false;
         }
     }
