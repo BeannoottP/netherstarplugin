@@ -80,6 +80,27 @@ public class NetherStar extends JavaPlugin
 
     loadListeners(new com.nicholas.EventListener());
     
+    //tps counter that google ai spit out
+    getServer().getScheduler().scheduleSyncRepeatingTask(this, new Runnable() {
+        long lastTickTime = System.currentTimeMillis();
+        int ticks = 0;
+        double tps = 20.0; // Initialize with perfect TPS
+
+        @Override
+        public void run() {
+            long currentTime = System.currentTimeMillis();
+            long timeElapsed = currentTime - lastTickTime;
+            lastTickTime = currentTime;
+
+            ticks++;
+            if (timeElapsed >= 1000) { // Check every second
+                tps = (double) ticks / (timeElapsed / 1000.0);
+                ticks = 0;
+                // You can then log this 'tps' value to the console
+                Bukkit.getLogger().info("Current TPS: " + String.format("%.2f", tps));
+            }
+        }
+    }, 0L, 1L); // Run every tick
 
   }
 
