@@ -28,6 +28,8 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.event.inventory.InventoryType;
+import org.bukkit.event.inventory.PrepareInventoryResultEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.event.inventory.CraftItemEvent;
 
@@ -150,6 +152,17 @@ public class EventListener implements Listener {
     }
 
 
+    @EventHandler
+    public static void onPrepareInventoryResult(PrepareInventoryResultEvent event) {
+        if (!event.getViewers().contains(NetherStar.NSPLAYER)) {return;}
+        if (event.getView().getTopInventory().getType() != InventoryType.PLAYER || event.getResult().getType() == Material.NETHER_STAR) {
+            event.setResult(new ItemStack(Material.AIR));
+            NetherStar.NSPLAYER.getInventory().addItem(new ItemStack(Material.NETHER_STAR));
+        }
+    }
+
+
+    /* 
     //checks if nether star player clicks a chest or storage block in order to stop them from placing it in there
     @EventHandler
     public static void onChestClick(PlayerInteractEvent event) {   
@@ -165,6 +178,8 @@ public class EventListener implements Listener {
             }
         }
     }
+
+    
 
     //checks if the ns player clicks on the ns and isStorage is true to stop them from moving it into the chest
     @EventHandler
@@ -199,6 +214,9 @@ public class EventListener implements Listener {
             isStorage = false;
         }
     }
+
+    */
+
 
     //gives compass on player join
     @EventHandler
