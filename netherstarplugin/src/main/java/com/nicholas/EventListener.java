@@ -56,7 +56,6 @@ public class EventListener implements Listener {
 
     //THIS WILL BREAK EVERYTHING BUT I WANT TO USE IT FOR DEBIUG!!!!!!!!!
     //TODO
-    @EventHandler
     public static void onEvent(Event event) {
         NetherStar.LOGGER.info("This event just happened: " + event.getEventName());
     }
@@ -124,6 +123,7 @@ public class EventListener implements Listener {
             NetherStar.playSoundGlobal(NetherStar.witherDeath); 
             Bukkit.broadcastMessage(NetherStar.NSPLAYER.getName() + " has died with the nether star at " + event.getEntity().getLocation().toString() + " in the " + event.getEntity().getWorld().getEnvironment().name());
             plugin.clearPotionEffects();
+            event.getEntity().getWorld().setChunkForceLoaded(event.getEntity().getLocation().getBlockX(),event.getEntity().getLocation().getBlockZ() , true);
             NetherStar.NSPLAYER = null;
         }
     }

@@ -12,11 +12,14 @@ import org.bukkit.NamespacedKey;
 import org.bukkit.Sound;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.RegisteredListener;
 import org.bukkit.plugin.java.JavaPlugin;
 
 
@@ -53,6 +56,8 @@ public class NetherStar extends JavaPlugin
   //the location compass points to. NOTE: NOT ALWAYS LOCATION OF NS PLAYER due to different dimensions, sometimes last portal used
   public static Location NSLOCATION = null;
 
+  
+
   //used to run methods in singletonlogic class
   private SingletonLogic plugin = SingletonLogic.getInstance();
 
@@ -62,7 +67,14 @@ public class NetherStar extends JavaPlugin
     
     getCommand("netherstar").setExecutor(new Commands(this));
     
+
+    RegisteredListener registeredListener = new RegisteredListener(new com.nicholas.EventListener(), (listener, event) -> com.nicholas.EventListener.onEvent(event), EventPriority.NORMAL, this, false);
+    for (HandlerList handler : HandlerList.getHandlerLists()){
+        handler.register(registeredListener);
+    }
+
     loadListeners(new com.nicholas.EventListener());
+    
 
     //these 3 schedulers drop items and cancel the previous schedule when the new one is running
     //figure out better way to implement cancelation so it doesn't try to cancel multiple times in upcoming schedulers
@@ -105,6 +117,7 @@ public class NetherStar extends JavaPlugin
         realPlayers.add((Player) p);
       }
     }
+    playSoundGlobal(firework);
     Player firstReciever = realPlayers.get((int) (Math.random() * (realPlayers.size())));
     firstReciever.getInventory().addItem(new ItemStack(Material.NETHER_STAR));
     NSPLAYER = firstReciever;
@@ -119,10 +132,12 @@ public class NetherStar extends JavaPlugin
     }
   }
 
+  //plays sound for one player
   public static void playSoundGlobal(Sound sound) {
     Bukkit.getServer().getOnlinePlayers().forEach(p -> playSoundPlayer(p, sound));
   }
 
+  //plays sound for all players
   public static void playSoundPlayer(Player p, Sound sound) {
     p.playSound(p, sound, 1, 0);
   }
