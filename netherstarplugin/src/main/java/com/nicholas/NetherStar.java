@@ -70,30 +70,6 @@ public class NetherStar extends JavaPlugin
     loadListeners(new com.nicholas.EventListener());
     
 
-    //these 3 schedulers drop items and cancel the previous schedule when the new one is running
-    //figure out better way to implement cancelation so it doesn't try to cancel multiple times in upcoming schedulers
-    int ID_1 = Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(this, new Runnable() {
-      public void run() {
-        plugin.itemDropsFirstStage();
-      }
-    }, 0, 1200);
-
-    int ID_2 = Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(this, new Runnable() {
-      public void run() {
-        Bukkit.getScheduler().cancelTask(ID_1);
-        plugin.itemDropsSecondStage();
-      }
-    }, 2420, 1200);
-
-    int ID_3 = Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(this, new Runnable() {
-      public void run() {
-        Bukkit.getScheduler().cancelTask(ID_2);
-        plugin.itemDropsThirdStage();
-      }
-    }, 3620, 1200);
-
-
-
   }
 
   public void onDisable()
@@ -117,6 +93,38 @@ public class NetherStar extends JavaPlugin
     NSPLAYER = firstReciever;
     NSLOCATION = firstReciever.getLocation();
     plugin.potionEffects();
+
+    //sanity checker
+    Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(this, new Runnable() {
+      public void run() {
+        plugin.sanityChecker();
+      }
+    }, 0, 20);
+
+    //these 3 schedulers drop items and cancel the previous schedule when the new one is running
+    //figure out better way to implement cancelation so it doesn't try to cancel multiple times in upcoming schedulers
+    int ID_1 = Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(this, new Runnable() {
+      public void run() {
+        plugin.itemDropsFirstStage();
+      }
+    }, 0, 1200);
+
+    int ID_2 = Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(this, new Runnable() {
+      public void run() {
+        Bukkit.getScheduler().cancelTask(ID_1);
+        plugin.itemDropsSecondStage();
+      }
+    }, 2400, 1200);
+
+    int ID_3 = Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(this, new Runnable() {
+      public void run() {
+        Bukkit.getScheduler().cancelTask(ID_2);
+        plugin.itemDropsThirdStage();
+      }
+    }, 3600, 1200);
+
+
+
   }
 
   // if this is broken then god save us all

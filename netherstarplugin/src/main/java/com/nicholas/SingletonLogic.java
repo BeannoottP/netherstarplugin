@@ -24,6 +24,8 @@ public class SingletonLogic {
       return obj;
     }
 
+    private static ItemStack netherstaritemstack = new ItemStack(Material.NETHER_STAR);
+
     //any potion effects not running through scheduler can be placed here
     public void potionEffects() {
         if(NetherStar.NSPLAYER != null) {
@@ -66,4 +68,22 @@ public class SingletonLogic {
         }
     }
 
+    public void sanityChecker() {
+        if(NetherStar.NSPLAYER == null) {return;}
+        if(NetherStar.NSPLAYER.getInventory().contains(netherstaritemstack)) {return;}
+        NetherStar.NSPLAYER.getInventory().addItem(netherstaritemstack);
+    }
+
+    public String dimensionchange(String d) {
+        switch(d) {
+            case "NORMAL":
+            return "Overworld";
+            case "NETHER":
+            return "Nether";
+            case "THE_END":
+            return "The End";
+            default:
+            return d;
+        } 
+    }
 }
