@@ -21,6 +21,7 @@ import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.event.entity.ItemDespawnEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
+import org.bukkit.event.player.PlayerEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerPortalEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -53,12 +54,6 @@ public class EventListener implements Listener {
     
 
 
-
-    //THIS WILL BREAK EVERYTHING BUT I WANT TO USE IT FOR DEBIUG!!!!!!!!!
-    //TODO
-    public static void onEvent(Event event) {
-        NetherStar.LOGGER.info("This event just happened: " + event.getEventName());
-    }
 
 
 
@@ -174,9 +169,23 @@ public class EventListener implements Listener {
     //checks if the ns player clicks on the ns and isStorage is true to stop them from moving it into the chest
     @EventHandler
     public static void onInventoryNetherStarClick(InventoryClickEvent event) {
-        if(event.getCurrentItem().getType() == null) {
+        if (event.getWhoClicked() != NetherStar.NSPLAYER) {return;}
+        
+        if (event.getHotbarButton() != -1) {
+            ItemStack[] inventory = event.getWhoClicked().getInventory().getContents();
+            for (int i = 0; i < 9; i++) {
+                if (inventory[i].getType() == Material.NETHER_STAR && event.getHotbarButton() == i) {
+                    event.setCancelled(true);
+                    event.getWhoClicked().sendMessage("You can't move the Nether Star in a chest");
+                    return;
+                }
+            }
+        }
+
+        if (event.getCurrentItem().getType() == null ) {
             return;
         }
+        
         else if(event.getWhoClicked().equals(NetherStar.NSPLAYER) && event.getCurrentItem().getType().equals(Material.NETHER_STAR) && isStorage) {
             event.setCancelled(true);
             event.getWhoClicked().sendMessage("You can't move the Nether Star in a chest");

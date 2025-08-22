@@ -66,12 +66,6 @@ public class NetherStar extends JavaPlugin
     LOGGER.info("NetherStarPlugin enabled");
     
     getCommand("netherstar").setExecutor(new Commands(this));
-    
-
-    RegisteredListener registeredListener = new RegisteredListener(new com.nicholas.EventListener(), (listener, event) -> com.nicholas.EventListener.onEvent(event), EventPriority.NORMAL, this, false);
-    for (HandlerList handler : HandlerList.getHandlerLists()){
-        handler.register(registeredListener);
-    }
 
     loadListeners(new com.nicholas.EventListener());
     
