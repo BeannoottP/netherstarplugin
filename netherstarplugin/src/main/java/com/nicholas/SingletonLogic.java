@@ -32,7 +32,9 @@ public class SingletonLogic {
 
     public boolean sanityCheckDisable = false;
 
-    private EventListener eventlistener;
+    public boolean stopMove = false;
+
+    public int slotIndex;
 
     //any potion effects not running through scheduler can be placed here
     public void potionEffects() {
@@ -81,7 +83,8 @@ public class SingletonLogic {
         if(NetherStar.NSPLAYER == null) {return;}
         if(NetherStar.NSPLAYER.getInventory().containsAtLeast(netherstaritemstack, 2)) {
             //might be a little slow but prevents more thaan 1 netherstar
-            int slotIndex = NetherStar.NSPLAYER.getInventory().first(Material.NETHER_STAR);
+            NetherStar.NSPLAYER.sendMessage("You have at least 2 stars");
+            slotIndex = NetherStar.NSPLAYER.getInventory().first(Material.NETHER_STAR);
             if (slotIndex != -1) {
                 ItemStack netherStarInInventory = NetherStar.NSPLAYER.getInventory().getItem(slotIndex);
                 netherStarInInventory.setAmount(1);

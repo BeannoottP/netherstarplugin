@@ -1,5 +1,6 @@
 package com.nicholas;
 
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.EventListener;
@@ -18,6 +19,9 @@ import org.bukkit.event.Listener;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+
+import net.md_5.bungee.api.ChatColor;
+
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.RegisteredListener;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -67,6 +71,15 @@ public class NetherStar extends JavaPlugin
   //the location compass points to. NOTE: NOT ALWAYS LOCATION OF NS PLAYER due to different dimensions, sometimes last portal used
   public static Location NSLOCATION = null;
 
+  public static Location NSLOCATION_NETHER = null;
+
+  public static int countdown = 10;
+
+  public static int ID_Countdown;
+
+  public static int ID_Start;
+
+  public boolean startcode = false;
   
 
   //used to run methods in singletonlogic class
@@ -113,26 +126,58 @@ public class NetherStar extends JavaPlugin
   
   //for start of event, called via command
   public void startPlugin() {
-    Collection players = Bukkit.getServer().getOnlinePlayers();
-    ArrayList<Player> realPlayers = new ArrayList<>();
-    for (Object p : players) {
-      if (p instanceof Player) {
-        realPlayers.add((Player) p);
+    plugin.stopMove = true;
+    startcode = true;
+    Bukkit.broadcastMessage(ChatColor.BOLD + "The game is starting in...");
+    ID_Countdown = Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(this, new Runnable() {
+      public void run() {
+        if(countdown > 0) {
+          Bukkit.broadcastMessage(ChatColor.of(Color.RED) + "" + ChatColor.BOLD + countdown);
+          countdown--;
+        }
+        else {
+          plugin.stopMove = false;
+          Bukkit.getScheduler().cancelTask(ID_Countdown);
+          return;
+        }
       }
-    }
-    playSoundGlobal(firework);
-    Player firstReciever = realPlayers.get((int) (Math.random() * (realPlayers.size())));
-    firstReciever.getInventory().addItem(new ItemStack(Material.NETHER_STAR));
-    NSPLAYER = firstReciever;
-    NSLOCATION = firstReciever.getLocation();
-    plugin.potionEffects();
+    }, 0, 20);
+
+    ID_Start = Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(this, new Runnable() {
+      public void run() {
+        if(startcode) {
+          Collection players = Bukkit.getServer().getOnlinePlayers();
+          ArrayList<Player> realPlayers = new ArrayList<>();
+          for (Object p : players) {
+            if (p instanceof Player) {
+              realPlayers.add((Player) p);
+            }
+          }
+          playSoundGlobal(firework);
+          Player firstReciever = realPlayers.get((int) (Math.random() * (realPlayers.size())));
+          firstReciever.getInventory().addItem(new ItemStack(Material.NETHER_STAR));
+          NSPLAYER = firstReciever;
+          NSLOCATION = firstReciever.getLocation();
+          plugin.potionEffects();
+
+          Bukkit.broadcastMessage("The Nether Star Game has started! " + ChatColor.of(Color.CYAN) +  "" + ChatColor.BOLD + NSPLAYER.getName() + ChatColor.RESET + " has been given the star! Use your compass to track them");
+          startcode = false;
+        }
+        else {
+          Bukkit.getScheduler().cancelTask(ID_Start);
+          return;
+        }
+      }
+    }, 201, 20);
+
+
 
     //sanity checker
     Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(this, new Runnable() {
       public void run() {
         plugin.sanityChecker();
       }
-    }, 0, 100);
+    }, 0, 20);
 
     //these 3 schedulers drop items and cancel the previous schedule when the new one is running
     //figure out better way to implement cancelation so it doesn't try to cancel multiple times in upcoming schedulers
@@ -147,14 +192,14 @@ public class NetherStar extends JavaPlugin
         Bukkit.getScheduler().cancelTask(ID_1);
         plugin.itemDropsSecondStage();
       }
-    }, 2400, 1200);
+    }, 24000, 1200);
 
     int ID_3 = Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(this, new Runnable() {
       public void run() {
         Bukkit.getScheduler().cancelTask(ID_2);
         plugin.itemDropsThirdStage();
       }
-    }, 3600, 1200);
+    }, 48000, 1200);
 
 
 

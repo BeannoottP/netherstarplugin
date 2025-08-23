@@ -25,11 +25,10 @@ import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.event.entity.ItemDespawnEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
-import org.bukkit.event.player.PlayerEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerPortalEvent;
-//import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
@@ -73,6 +72,10 @@ public class EventListener implements Listener {
      */
     @EventHandler
     public static void onPlayerMove(PlayerMoveEvent event) {
+        if(plugin.stopMove) {
+            event.setCancelled(true);
+        }
+
         if (NetherStar.NSLOCATION == null) {return;}
         
         if (event.getPlayer() != NetherStar.NSPLAYER) {
@@ -81,6 +84,10 @@ public class EventListener implements Listener {
             }
             return;
         }
+
+        //so when the nether star player moves the sanity check returns to false
+        plugin.sanityCheckDisable = false;
+
         if (event.getPlayer().getWorld().getEnvironment() != Environment.NORMAL) {
             return;
         }
@@ -111,7 +118,7 @@ public class EventListener implements Listener {
             int y_coord = event.getEntity().getLocation().getBlockY();
             int z_coord = event.getEntity().getLocation().getBlockZ();
             String dimension = event.getEntity().getWorld().getEnvironment().name();
-            Bukkit.broadcastMessage(ChatColor.of(Color.CYAN) + NetherStar.NSPLAYER.getName() + ChatColor.of(Color.WHITE) + " has picked up the nether star at " + ChatColor.of(Color.RED) + x_coord + ", " + y_coord + ", " + z_coord + ChatColor.of(Color.WHITE) + " in the " + ChatColor.of(Color.CYAN) + plugin.dimensionchange(dimension) + ".");
+            Bukkit.broadcastMessage(ChatColor.of(Color.CYAN) + "" + ChatColor.BOLD + NetherStar.NSPLAYER.getName() + ChatColor.RESET + " has picked up the nether star at " + ChatColor.of(Color.RED) + "" + ChatColor.BOLD + x_coord + ", " + y_coord + ", " + z_coord + ChatColor.RESET + " in the " + ChatColor.of(Color.CYAN) + "" + ChatColor.BOLD + plugin.dimensionchange(dimension));
             return;
         }
         if (event.getItem().getItemStack().getType() == Material.COMPASS) {
@@ -130,8 +137,7 @@ public class EventListener implements Listener {
             int y_coord = event.getEntity().getLocation().getBlockY();
             int z_coord = event.getEntity().getLocation().getBlockZ();
             String dimension = event.getEntity().getWorld().getEnvironment().name();
-            Bukkit.broadcastMessage(ChatColor.of(Color.CYAN) + NetherStar.NSPLAYER.getName() + ChatColor.of(Color.WHITE) + " has died with the nether star at " + ChatColor.of(Color.RED) + x_coord + ", " + y_coord + ", " + z_coord + ChatColor.of(Color.WHITE) + " in the " + ChatColor.of(Color.CYAN) + plugin.dimensionchange(dimension) + ".");
-            event.getEntity().getWorld().setChunkForceLoaded(event.getEntity().getLocation().getBlockX(),event.getEntity().getLocation().getBlockZ() , true);
+            Bukkit.broadcastMessage(ChatColor.of(Color.CYAN) + "" + ChatColor.BOLD + NetherStar.NSPLAYER.getName() + ChatColor.RESET + " has died with the nether star at " + ChatColor.of(Color.RED) + "" + ChatColor.BOLD + x_coord + ", " + y_coord + ", " + z_coord + ChatColor.RESET + " in the " + ChatColor.of(Color.CYAN) + "" + ChatColor.BOLD + plugin.dimensionchange(dimension));
             plugin.clearPotionEffects();     
             NetherStar.NSPLAYER = null;
         }
@@ -142,8 +148,11 @@ public class EventListener implements Listener {
     @EventHandler
     public static void onPortalEntrance(PlayerPortalEvent event) {
         if (event.getPlayer() != NetherStar.NSPLAYER && event.getTo().getWorld().getEnvironment() != Environment.NORMAL && NetherStar.NSPLAYER.getWorld().getEnvironment() == event.getTo().getWorld().getEnvironment()) {
+            int x_coord = NetherStar.NSPLAYER.getLocation().getBlockX();
+            int y_coord = NetherStar.NSPLAYER.getLocation().getBlockY();
+            int z_coord = NetherStar.NSPLAYER.getLocation().getBlockZ();
             NetherStar.playSoundPlayer(event.getPlayer(), NetherStar.ding);
-            event.getPlayer().sendMessage(NetherStar.NSPLAYER.getName() + " is in this dimension with the nether star at " + NetherStar.NSPLAYER.getLocation().getX() + " " + NetherStar.NSPLAYER.getLocation().getY() +  " " + NetherStar.NSPLAYER.getLocation().getZ());
+            event.getPlayer().sendMessage(NetherStar.NSPLAYER.getName() + " is in this dimension with the nether star at " + ChatColor.of(Color.RED) + "" + ChatColor.BOLD + x_coord + ", " + y_coord +  ", " + z_coord);
             event.getPlayer().sendMessage("Your compass will not work in this dimension");
             return;
         }
@@ -154,9 +163,10 @@ public class EventListener implements Listener {
         
         if (event.getTo().getWorld().getEnvironment() != Environment.NORMAL) {
             NetherStar.playSoundGlobal(NetherStar.portal);
-            Bukkit.broadcastMessage(NetherStar.NSPLAYER.getName() + " has used a portal at " + 
-                                    event.getFrom().getX() + " " + event.getFrom().getY() +  " " + event.getFrom().getZ() + 
-                                    " to enter the " + event.getTo().getWorld().getEnvironment().name());
+            String dimension = NetherStar.NSPLAYER.getWorld().getEnvironment().name();
+            Bukkit.broadcastMessage(NetherStar.NSPLAYER.getName() + " has used a portal at " + ChatColor.of(Color.RED) + "" + ChatColor.BOLD +
+                                    event.getFrom().getBlockX() + " " + event.getFrom().getBlockY() +  " " + event.getFrom().getBlockZ() + ChatColor.RESET + 
+                                    " to enter the " + ChatColor.of(Color.RED) + "" + ChatColor.BOLD + plugin.dimensionchange(dimension));
             Bukkit.broadcastMessage("Your compasses will now point towards the last used portal");
             NetherStar.NSLOCATION = event.getFrom();
             return;
@@ -219,7 +229,7 @@ public class EventListener implements Listener {
                 }
             }*/
 
-        if(event.getCurrentItem().getType() != null && event.getCurrentItem().getType().equals(Material.NETHER_STAR) && isStorage) {
+        if(event.getCurrentItem() != null && event.getCurrentItem().getType().equals(Material.NETHER_STAR) && isStorage) {
             event.setCancelled(true);
             event.getWhoClicked().sendMessage("You can't move the Nether Star into storage");
         }
@@ -239,7 +249,6 @@ public class EventListener implements Listener {
     @EventHandler
     public static void onInventoryNetherStarClose(InventoryCloseEvent event) {
         if(event.getPlayer().equals(NetherStar.NSPLAYER) && isStorage) {
-            plugin.sanityCheckDisable = false;
             isStorage = false;
         }
     }
@@ -288,8 +297,9 @@ public class EventListener implements Listener {
         //this is dumb and there is definitley a better way to do it
         //tries default name for overworld, if that doesnt work, goes through all players and checks to see if one is in overworld, if that doesnt work, just give up
         World overworld = Bukkit.getWorld("world");
-        boolean found = false;
+        boolean found = true;
         if (overworld == null || overworld.getEnvironment() != Environment.NORMAL) {
+            found = false;
             for (Player p : Bukkit.getOnlinePlayers()) {
                 overworld = p.getWorld();
                 if (overworld != null && overworld.getEnvironment() == Environment.NORMAL) {
@@ -308,9 +318,22 @@ public class EventListener implements Listener {
         
         NetherStar.playSoundGlobal(NetherStar.witherDeath);
         event.getEntity().teleport(new Location(overworld, 0, overworld.getHighestBlockYAt(0, 0) +1, 0));
+        int x_world_spawn = event.getEntity().getWorld().getSpawnLocation().getBlockX();
+        int y_world_spawn = event.getEntity().getWorld().getSpawnLocation().getBlockY();
+        int z_world_spawn = event.getEntity().getWorld().getSpawnLocation().getBlockZ();
+        event.getEntity().teleport(new Location(overworld, x_world_spawn, y_world_spawn +1, z_world_spawn));
+        Bukkit.broadcastMessage("Moved the Nether Star to world spawn at " + ChatColor.of(Color.RED) + "" + ChatColor.BOLD + x_world_spawn + ", " + y_world_spawn + ", " + z_world_spawn + ChatColor.RESET + " due to despawn. Good luck :)");
         event.getEntity().setUnlimitedLifetime(true);
-        Bukkit.broadcastMessage("Moved the Nether Star to 0 0 due to despawn. Good luck :)");
         event.setCancelled(true);
     }
+
+    /*@EventHandler
+    public static void netherCompassClick(PlayerInteractEvent event) {
+        if(event.getPlayer().equals(NetherStar.NSPLAYER)) {return;}
+        if(event.getPlayer().getWorld().getEnvironment() != Environment.NETHER) {return;}
+        if(event.getPlayer().getItemInHand().getType().equals(Material.COMPASS)) {
+
+        }
+    }*/
 
 }
