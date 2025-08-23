@@ -7,10 +7,13 @@ import static org.bukkit.potion.PotionEffect.INFINITE_DURATION;
 
 import java.awt.Event;
 import java.security.SignedObject;
+import java.util.ArrayList;
+import java.util.Collection;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Sound;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 
@@ -39,7 +42,7 @@ public class SingletonLogic {
     //any potion effects not running through scheduler can be placed here
     public void potionEffects() {
         if(NetherStar.NSPLAYER != null) {
-            NetherStar.NSPLAYER.addPotionEffect(new PotionEffect(PotionEffectType.RESISTANCE, INFINITE_DURATION, 0, true));
+            //NetherStar.NSPLAYER.addPotionEffect(new PotionEffect(PotionEffectType.RESISTANCE, INFINITE_DURATION, 0, true));
             NetherStar.NSPLAYER.addPotionEffect(new PotionEffect(PotionEffectType.HASTE, INFINITE_DURATION, 0, true));
             NetherStar.NSPLAYER.setMaxHealth(24);
         }
@@ -48,17 +51,30 @@ public class SingletonLogic {
     //resets all potion effects after ns player dies
     public void clearPotionEffects() {
         if(NetherStar.NSPLAYER != null) {
-            NetherStar.NSPLAYER.removePotionEffect(PotionEffectType.RESISTANCE);
+            //NetherStar.NSPLAYER.removePotionEffect(PotionEffectType.RESISTANCE);
             NetherStar.NSPLAYER.removePotionEffect(PotionEffectType.HASTE);
             NetherStar.NSPLAYER.setMaxHealth(20);
         }
     }
 
+    public void playerFoodDrops() {
+        Collection players = Bukkit.getServer().getOnlinePlayers();
+        ArrayList<Player> realPlayers = new ArrayList<>();
+        for (Object p : players) {
+            if (p instanceof Player) {
+                realPlayers.add((Player) p);
+            }
+        }
+        for (Player q : realPlayers) {
+            q.getInventory().addItem(new ItemStack(Material.COOKED_BEEF));
+        }
+    }
+
+
     //buffs for stage 1
     public void itemDropsFirstStage() {
         if(NetherStar.NSPLAYER != null) {
             NetherStar.NSPLAYER.getInventory().addItem(new ItemStack(Material.IRON_INGOT));
-            NetherStar.NSPLAYER.getInventory().addItem(new ItemStack(Material.COOKED_BEEF));
         }
     }
 
@@ -66,7 +82,6 @@ public class SingletonLogic {
     public void itemDropsSecondStage() {
         if(NetherStar.NSPLAYER != null) {
             NetherStar.NSPLAYER.getInventory().addItem(new ItemStack(Material.DIAMOND));
-            NetherStar.NSPLAYER.getInventory().addItem(new ItemStack(Material.GOLDEN_APPLE));
         }
     }
     
@@ -106,5 +121,23 @@ public class SingletonLogic {
             default:
             return d;
         } 
+    }
+
+    public boolean toolChecker(ItemStack item) {
+        if(item == null) {return false;}
+        if(item.toString().toLowerCase().contains("axe")) {return true;}
+        if(item.toString().toLowerCase().contains("pickaxe")) {return true;}
+        if(item.toString().toLowerCase().contains("shovel")) {return true;}
+        if(item.toString().toLowerCase().contains("hoe")) {return true;}
+        if(item.toString().toLowerCase().contains("ore")) {return true;}
+        if(item.toString().toLowerCase().contains("ingot")) {return true;}
+        if(item.toString().toLowerCase().contains("raw")) {return true;}
+        if(item.toString().toLowerCase().contains("cooked")) {return true;}
+        if(item.toString().toLowerCase().contains("sword")) {return true;}
+        if(item.toString().toLowerCase().contains("chestplate")) {return true;}
+        if(item.toString().toLowerCase().contains("leggings")) {return true;}
+        if(item.toString().toLowerCase().contains("helmet")) {return true;}
+        if(item.toString().toLowerCase().contains("boots")) {return true;}
+        return false;
     }
 }

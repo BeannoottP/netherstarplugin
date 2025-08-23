@@ -19,6 +19,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import org.bukkit.WorldBorder;
 
 import net.md_5.bungee.api.ChatColor;
 
@@ -30,28 +31,15 @@ import org.bukkit.plugin.java.JavaPlugin;
 /*
  * netherstarplugin java plugin
  * TODO
- * 5 tick sanity checker, check if nether star is inventory every 5 ticks - SHOULD BE WORKING but could be optimized more
- * Timed item drops - DONE DONE DONE
- * Sound effects - maybe change to beacon startup
- * Fix broadcast messages of coordinates - DONE
- * Stylize broadcast messages - colors are done bold is not done
- * Prevent nether star despawning, teleport to world spawn or give to random person - BROKEN
- * change chest logic to check if inventory is not player inventory - DONE
- * donkey chest - DONE
- * prevent hotbar - DONE
- * prevent compass stacking - DONE
+ * 5 tick sanity checker doesn't work in off hand
+ * Loot pool and timed item drops, figure out what to do
  * Loot drop revamp? Loottable class
  * /top command (because mining up sucks and wastes time) (maybe make it so you cant use /top if you are nearby other players?)
- * 
- * BIG THINGS
- * Get nether and nether compasses working
- * Do limit testing and bug testing to make sure everything is working
- * Do performance testing to see how bad lag is
- * Figure out how to structure game (loot drops, stages, world border)
- * 
- * Things to possibly add
  * World border
- * Win condition + sudden death?
+ * Win condition + sudden death
+ * burning star is a little bit broken, jumping in the lava in the nether causes 2 stars to be produced
+ * keep inventory working but need to figure out what to keep
+ * figure out what to do if nether star player leaves the game
  * 
  */
 public class NetherStar extends JavaPlugin
@@ -160,6 +148,7 @@ public class NetherStar extends JavaPlugin
           NSLOCATION = firstReciever.getLocation();
           plugin.potionEffects();
 
+
           Bukkit.broadcastMessage("The Nether Star Game has started! " + ChatColor.of(Color.CYAN) +  "" + ChatColor.BOLD + NSPLAYER.getName() + ChatColor.RESET + " has been given the star! Use your compass to track them");
           startcode = false;
         }
@@ -184,22 +173,25 @@ public class NetherStar extends JavaPlugin
     int ID_1 = Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(this, new Runnable() {
       public void run() {
         plugin.itemDropsFirstStage();
+        plugin.playerFoodDrops();
       }
-    }, 0, 1200);
+    }, 0, 3600);
 
     int ID_2 = Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(this, new Runnable() {
       public void run() {
         Bukkit.getScheduler().cancelTask(ID_1);
         plugin.itemDropsSecondStage();
+        plugin.playerFoodDrops();
       }
-    }, 24000, 1200);
+    }, 24000, 3600);
 
     int ID_3 = Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(this, new Runnable() {
       public void run() {
         Bukkit.getScheduler().cancelTask(ID_2);
         plugin.itemDropsThirdStage();
+        plugin.playerFoodDrops();
       }
-    }, 48000, 1200);
+    }, 48000, 3600);
 
 
 
