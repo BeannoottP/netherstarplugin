@@ -1,4 +1,5 @@
 package com.nicholas;
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -8,12 +9,15 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.World.Environment;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.checkerframework.checker.units.qual.t;
+
+import net.md_5.bungee.api.ChatColor;
+
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityCombustEvent;
@@ -21,12 +25,12 @@ import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.event.entity.ItemDespawnEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
-import org.bukkit.event.player.PlayerEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerPortalEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.event.inventory.CraftItemEvent;
@@ -40,15 +44,17 @@ public class EventListener implements Listener {
     //used to run methods from singletonlogic class
     private static SingletonLogic plugin = SingletonLogic.getInstance();
 
+    private static ItemStack netherstaritemstack = new ItemStack(Material.NETHER_STAR);
+
     //used to check if ns player opens chest or storage
     public static boolean isStorage = false;
 
-    //used to store items for what the nether star can be stored in
-    private static List<Material> storageitems = new ArrayList<>(Arrays.asList(
+    //used to store items for what the nether star can be stored in NO LONGER NEEDED
+    /*private static List<Material> storageitems = new ArrayList<>(Arrays.asList(
                                                                 Material.CHEST, Material.TRAPPED_CHEST, Material.ENDER_CHEST, Material.HOPPER, 
                                                                 Material.CHEST_MINECART, Material.HOPPER_MINECART, Material.SHULKER_BOX, 
                                                                 Material.DISPENSER, Material.DROPPER, Material.CRAFTING_TABLE, Material.FURNACE, 
-                                                                Material.BLAST_FURNACE, Material.SMOKER, Material.BARREL, Material.BREWING_STAND));
+                                                                Material.BLAST_FURNACE, Material.SMOKER, Material.BARREL, Material.BREWING_STAND));*/
 
     
     
@@ -66,6 +72,10 @@ public class EventListener implements Listener {
      */
     @EventHandler
     public static void onPlayerMove(PlayerMoveEvent event) {
+        if(plugin.stopMove) {
+            event.setCancelled(true);
+        }
+
         if (NetherStar.NSLOCATION == null) {return;}
         
         if (event.getPlayer() != NetherStar.NSPLAYER) {
@@ -74,6 +84,10 @@ public class EventListener implements Listener {
             }
             return;
         }
+
+        //so when the nether star player moves the sanity check returns to false
+        plugin.sanityCheckDisable = false;
+
         if (event.getPlayer().getWorld().getEnvironment() != Environment.NORMAL) {
             return;
         }
@@ -100,7 +114,11 @@ public class EventListener implements Listener {
             //NICK FIX LOGIC HERE   
             plugin.potionEffects();
             NetherStar.playSoundGlobal(NetherStar.ding);
-            Bukkit.broadcastMessage(NetherStar.NSPLAYER.getName() + " has picked up the nether star at " + NetherStar.NSPLAYER.getLocation().getX() + " " + NetherStar.NSPLAYER.getLocation().getY() +  " " + NetherStar.NSPLAYER.getLocation().getZ() + " in the " + NetherStar.NSPLAYER.getWorld().getEnvironment().name());
+            int x_coord = event.getEntity().getLocation().getBlockX();
+            int y_coord = event.getEntity().getLocation().getBlockY();
+            int z_coord = event.getEntity().getLocation().getBlockZ();
+            String dimension = event.getEntity().getWorld().getEnvironment().name();
+            Bukkit.broadcastMessage(ChatColor.of(Color.CYAN) + "" + ChatColor.BOLD + NetherStar.NSPLAYER.getName() + ChatColor.RESET + " has picked up the nether star at " + ChatColor.of(Color.RED) + "" + ChatColor.BOLD + x_coord + ", " + y_coord + ", " + z_coord + ChatColor.RESET + " in the " + ChatColor.of(Color.CYAN) + "" + ChatColor.BOLD + plugin.dimensionchange(dimension));
             return;
         }
         if (event.getItem().getItemStack().getType() == Material.COMPASS) {
@@ -114,11 +132,13 @@ public class EventListener implements Listener {
     @EventHandler
     public static void onPlayerDeath(PlayerDeathEvent event) {
         if(event.getEntity() == NetherStar.NSPLAYER) {
-            //NICK FIX LOGIC HERE 
             NetherStar.playSoundGlobal(NetherStar.witherDeath); 
-            Bukkit.broadcastMessage(NetherStar.NSPLAYER.getName() + " has died with the nether star at " + event.getEntity().getLocation().toString() + " in the " + event.getEntity().getWorld().getEnvironment().name());
-            plugin.clearPotionEffects();
-            event.getEntity().getWorld().setChunkForceLoaded(event.getEntity().getLocation().getBlockX(),event.getEntity().getLocation().getBlockZ() , true);
+            int x_coord = event.getEntity().getLocation().getBlockX();
+            int y_coord = event.getEntity().getLocation().getBlockY();
+            int z_coord = event.getEntity().getLocation().getBlockZ();
+            String dimension = event.getEntity().getWorld().getEnvironment().name();
+            Bukkit.broadcastMessage(ChatColor.of(Color.CYAN) + "" + ChatColor.BOLD + NetherStar.NSPLAYER.getName() + ChatColor.RESET + " has died with the nether star at " + ChatColor.of(Color.RED) + "" + ChatColor.BOLD + x_coord + ", " + y_coord + ", " + z_coord + ChatColor.RESET + " in the " + ChatColor.of(Color.CYAN) + "" + ChatColor.BOLD + plugin.dimensionchange(dimension));
+            plugin.clearPotionEffects();     
             NetherStar.NSPLAYER = null;
         }
     }
@@ -128,8 +148,11 @@ public class EventListener implements Listener {
     @EventHandler
     public static void onPortalEntrance(PlayerPortalEvent event) {
         if (event.getPlayer() != NetherStar.NSPLAYER && event.getTo().getWorld().getEnvironment() != Environment.NORMAL && NetherStar.NSPLAYER.getWorld().getEnvironment() == event.getTo().getWorld().getEnvironment()) {
+            int x_coord = NetherStar.NSPLAYER.getLocation().getBlockX();
+            int y_coord = NetherStar.NSPLAYER.getLocation().getBlockY();
+            int z_coord = NetherStar.NSPLAYER.getLocation().getBlockZ();
             NetherStar.playSoundPlayer(event.getPlayer(), NetherStar.ding);
-            event.getPlayer().sendMessage(NetherStar.NSPLAYER.getName() + " is in this dimension with the nether star at " + NetherStar.NSPLAYER.getLocation().getX() + " " + NetherStar.NSPLAYER.getLocation().getY() +  " " + NetherStar.NSPLAYER.getLocation().getZ());
+            event.getPlayer().sendMessage(NetherStar.NSPLAYER.getName() + " is in this dimension with the nether star at " + ChatColor.of(Color.RED) + "" + ChatColor.BOLD + x_coord + ", " + y_coord +  ", " + z_coord);
             event.getPlayer().sendMessage("Your compass will not work in this dimension");
             return;
         }
@@ -140,9 +163,10 @@ public class EventListener implements Listener {
         
         if (event.getTo().getWorld().getEnvironment() != Environment.NORMAL) {
             NetherStar.playSoundGlobal(NetherStar.portal);
-            Bukkit.broadcastMessage(NetherStar.NSPLAYER.getName() + " has used a portal at " + 
-                                    event.getFrom().getX() + " " + event.getFrom().getY() +  " " + event.getFrom().getZ() + 
-                                    " to enter the " + event.getTo().getWorld().getEnvironment().name());
+            String dimension = NetherStar.NSPLAYER.getWorld().getEnvironment().name();
+            Bukkit.broadcastMessage(NetherStar.NSPLAYER.getName() + " has used a portal at " + ChatColor.of(Color.RED) + "" + ChatColor.BOLD +
+                                    event.getFrom().getBlockX() + " " + event.getFrom().getBlockY() +  " " + event.getFrom().getBlockZ() + ChatColor.RESET + 
+                                    " to enter the " + ChatColor.of(Color.RED) + "" + ChatColor.BOLD + plugin.dimensionchange(dimension));
             Bukkit.broadcastMessage("Your compasses will now point towards the last used portal");
             NetherStar.NSLOCATION = event.getFrom();
             return;
@@ -151,7 +175,7 @@ public class EventListener implements Listener {
 
 
     //checks if nether star player clicks a chest or storage block in order to stop them from placing it in there
-    @EventHandler
+    /*@EventHandler
     public static void onChestClick(PlayerInteractEvent event) {   
         if(event.getPlayer().equals(NetherStar.NSPLAYER)) {
             if(event.getClickedBlock() == null) {
@@ -164,32 +188,61 @@ public class EventListener implements Listener {
                 isStorage = false;
             }
         }
+    }*/
+
+    @EventHandler
+    public static void onInventoryOpen(InventoryOpenEvent event) {
+        if (event.getPlayer() == NetherStar.NSPLAYER) {
+            
+            
+            Inventory opened_inv = event.getInventory();
+            if (opened_inv.getType().toString().equals("PLAYER")) {return;}
+            else {
+                isStorage = true;
+            }
+        }
     }
 
     //checks if the ns player clicks on the ns and isStorage is true to stop them from moving it into the chest
     @EventHandler
     public static void onInventoryNetherStarClick(InventoryClickEvent event) {
         if (event.getWhoClicked() != NetherStar.NSPLAYER) {return;}
-        
-        if (event.getHotbarButton() != -1) {
-            ItemStack[] inventory = event.getWhoClicked().getInventory().getContents();
-            for (int i = 0; i < 9; i++) {
-                if (inventory[i].getType() == Material.NETHER_STAR && event.getHotbarButton() == i) {
-                    event.setCancelled(true);
-                    event.getWhoClicked().sendMessage("You can't move the Nether Star in a chest");
-                    return;
-                }
+        // i dont know if using an if statement here is more optimized or not
+        // if(event.getCurrentItem.getType.equals(Material.NETHER_STAR)) {plugin.sanityCheckDisable = true;}
+        plugin.sanityCheckDisable = true;
+        if (event.getHotbarButton() != -1 && isStorage) {
+            if(event.getWhoClicked().getInventory().getItem(event.getHotbarButton()) == null) {return;}
+            ItemStack hotbaritem = event.getWhoClicked().getInventory().getItem(event.getHotbarButton());
+            if(hotbaritem.isSimilar(netherstaritemstack)) {
+                event.setCancelled(true);
+                event.getWhoClicked().sendMessage("You can't move the Nether Star into storage");
+                return;
             }
         }
 
-        if (event.getCurrentItem().getType() == null ) {
+            /*ItemStack[] inventory = event.getWhoClicked().getInventory().getContents();
+            for (int i = 0; i < 9; i++) {
+                if (inventory[i].getType() == Material.NETHER_STAR && event.getHotbarButton() == i) {
+                    event.setCancelled(true);
+                    event.getWhoClicked().sendMessage("You can't move the Nether Star into storage");
+                    return;
+                }
+            }*/
+
+        if(event.getCurrentItem() != null && event.getCurrentItem().getType().equals(Material.NETHER_STAR) && isStorage) {
+            event.setCancelled(true);
+            event.getWhoClicked().sendMessage("You can't move the Nether Star into storage");
+        }
+
+
+        /*if (event.getCurrentItem().getType() == null ) {
             return;
         }
         
         else if(event.getWhoClicked().equals(NetherStar.NSPLAYER) && event.getCurrentItem().getType().equals(Material.NETHER_STAR) && isStorage) {
             event.setCancelled(true);
-            event.getWhoClicked().sendMessage("You can't move the Nether Star in a chest");
-        }
+            event.getWhoClicked().sendMessage("You can't move the Nether Star into storage");
+        }*/
     }
 
     //resets the chest bool so that they can move the nether star after closing inventory
@@ -244,8 +297,9 @@ public class EventListener implements Listener {
         //this is dumb and there is definitley a better way to do it
         //tries default name for overworld, if that doesnt work, goes through all players and checks to see if one is in overworld, if that doesnt work, just give up
         World overworld = Bukkit.getWorld("world");
-        boolean found = false;
+        boolean found = true;
         if (overworld == null || overworld.getEnvironment() != Environment.NORMAL) {
+            found = false;
             for (Player p : Bukkit.getOnlinePlayers()) {
                 overworld = p.getWorld();
                 if (overworld != null && overworld.getEnvironment() == Environment.NORMAL) {
@@ -264,9 +318,22 @@ public class EventListener implements Listener {
         
         NetherStar.playSoundGlobal(NetherStar.witherDeath);
         event.getEntity().teleport(new Location(overworld, 0, overworld.getHighestBlockYAt(0, 0) +1, 0));
+        int x_world_spawn = event.getEntity().getWorld().getSpawnLocation().getBlockX();
+        int y_world_spawn = event.getEntity().getWorld().getSpawnLocation().getBlockY();
+        int z_world_spawn = event.getEntity().getWorld().getSpawnLocation().getBlockZ();
+        event.getEntity().teleport(new Location(overworld, x_world_spawn, y_world_spawn +1, z_world_spawn));
+        Bukkit.broadcastMessage("Moved the Nether Star to world spawn at " + ChatColor.of(Color.RED) + "" + ChatColor.BOLD + x_world_spawn + ", " + y_world_spawn + ", " + z_world_spawn + ChatColor.RESET + " due to despawn. Good luck :)");
         event.getEntity().setUnlimitedLifetime(true);
-        Bukkit.broadcastMessage("Moved the Nether Star to 0 0 due to despawn. Good luck :)");
         event.setCancelled(true);
     }
+
+    /*@EventHandler
+    public static void netherCompassClick(PlayerInteractEvent event) {
+        if(event.getPlayer().equals(NetherStar.NSPLAYER)) {return;}
+        if(event.getPlayer().getWorld().getEnvironment() != Environment.NETHER) {return;}
+        if(event.getPlayer().getItemInHand().getType().equals(Material.COMPASS)) {
+
+        }
+    }*/
 
 }

@@ -5,9 +5,13 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import static org.bukkit.potion.PotionEffect.INFINITE_DURATION;
 
+import java.awt.Event;
+import java.security.SignedObject;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Sound;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 
 //THIS CLASS WAS CREATED TO RUN ANY LOGIC THAT NEEDS TO GO BETWEEN CLASSES
@@ -23,6 +27,14 @@ public class SingletonLogic {
     public static SingletonLogic getInstance() {
       return obj;
     }
+
+    private static ItemStack netherstaritemstack = new ItemStack(Material.NETHER_STAR);
+
+    public boolean sanityCheckDisable = false;
+
+    public boolean stopMove = false;
+
+    public int slotIndex;
 
     //any potion effects not running through scheduler can be placed here
     public void potionEffects() {
@@ -66,4 +78,33 @@ public class SingletonLogic {
         }
     }
 
+    public void sanityChecker() {
+        if(sanityCheckDisable) {return;}
+        if(NetherStar.NSPLAYER == null) {return;}
+        if(NetherStar.NSPLAYER.getInventory().containsAtLeast(netherstaritemstack, 2)) {
+            //might be a little slow but prevents more thaan 1 netherstar
+            NetherStar.NSPLAYER.sendMessage("You have at least 2 stars");
+            slotIndex = NetherStar.NSPLAYER.getInventory().first(Material.NETHER_STAR);
+            if (slotIndex != -1) {
+                ItemStack netherStarInInventory = NetherStar.NSPLAYER.getInventory().getItem(slotIndex);
+                netherStarInInventory.setAmount(1);
+                NetherStar.NSPLAYER.getInventory().setItem(slotIndex, netherStarInInventory);
+            }
+        }
+        if(NetherStar.NSPLAYER.getInventory().contains(netherstaritemstack.getType())) {return;}
+        NetherStar.NSPLAYER.getInventory().addItem(netherstaritemstack);
+    }
+
+    public String dimensionchange(String d) {
+        switch(d) {
+            case "NORMAL":
+            return "Overworld";
+            case "NETHER":
+            return "Nether";
+            case "THE_END":
+            return "The End";
+            default:
+            return d;
+        } 
+    }
 }
