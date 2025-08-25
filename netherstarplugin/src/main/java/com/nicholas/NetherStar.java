@@ -41,6 +41,12 @@ import org.bukkit.plugin.java.JavaPlugin;
  * keep inventory working but need to figure out what to keep
  * figure out what to do if nether star player leaves the game
  * 
+ * UPDATED TODO
+ * fix duping nether stars (update sanity checker?)
+ * improve loot drops to make people wanna hold the star
+ * add world border to stop people from running so much, make it shrink to sudden death
+ * change keep inventory to 40% of everything except for pickaxe, axe, shovel, sword, and food
+ * 
  */
 public class NetherStar extends JavaPlugin
 {
@@ -77,7 +83,9 @@ public class NetherStar extends JavaPlugin
   {
     LOGGER.info("NetherStarPlugin enabled");
     
-    getCommand("netherstar").setExecutor(new Commands(this));
+    Commands c = new Commands(this);
+    getCommand("netherstar").setExecutor(c);
+    getCommand("top").setExecutor(c);
 
     loadListeners(new com.nicholas.EventListener());
     

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" name="com.nicholas.PluginTest" time="0.037" tests="1" errors="0" skipped="0" failures="0">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" name="com.nicholas.PluginTest" time="0.047" tests="1" errors="0" skipped="0" failures="0">
   <properties>
     <property name="java.specification.version" value="17"/>
     <property name="sun.cpu.isalist" value="amd64"/>
@@ -15,7 +15,7 @@
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
     <property name="user.country" value="US"/>
     <property name="sun.boot.library.path" value="C:\Program Files\Amazon Corretto\jdk17.0.13_11\bin"/>
-    <property name="sun.java.command" value="C:\Users\Nicholas\AppData\Local\Temp\surefire18172590654852477468\surefirebooter12634323217934709706.jar C:\Users\Nicholas\AppData\Local\Temp\surefire18172590654852477468 2025-08-23T03-19-39_308-jvmRun1 surefire10165619738820489761tmp surefire_09038071139532576503tmp"/>
+    <property name="sun.java.command" value="C:\Users\Nicholas\AppData\Local\Temp\surefire15762134506881257853\surefirebooter15474221456581201493.jar C:\Users\Nicholas\AppData\Local\Temp\surefire15762134506881257853 2025-08-24T22-08-01_286-jvmRun1 surefire920700406791834572tmp surefire_09665468600205921152tmp"/>
     <property name="jdk.debug" value="release"/>
     <property name="surefire.test.class.path" value="c:\Users\Nicholas\Desktop\VSCode Projects\Minecraft Plugins\netherstarpluginupddated\netherstarplugin\netherstarplugin\target\test-classes;c:\Users\Nicholas\Desktop\VSCode Projects\Minecraft Plugins\netherstarpluginupddated\netherstarplugin\netherstarplugin\target\classes;C:\Users\Nicholas\.m2\repository\junit\junit\4.11\junit-4.11.jar;C:\Users\Nicholas\.m2\repository\org\hamcrest\hamcrest-core\1.3\hamcrest-core-1.3.jar;C:\Users\Nicholas\.m2\repository\org\spigotmc\spigot-api\1.21.5-R0.1-SNAPSHOT\spigot-api-1.21.5-R0.1-SNAPSHOT.jar;C:\Users\Nicholas\.m2\repository\com\google\guava\guava\33.3.1-jre\guava-33.3.1-jre.jar;C:\Users\Nicholas\.m2\repository\com\google\guava\failureaccess\1.0.2\failureaccess-1.0.2.jar;C:\Users\Nicholas\.m2\repository\com\google\guava\listenablefuture\9999.0-empty-to-avoid-conflict-with-guava\listenablefuture-9999.0-empty-to-avoid-conflict-with-guava.jar;C:\Users\Nicholas\.m2\repository\com\google\code\findbugs\jsr305\3.0.2\jsr305-3.0.2.jar;C:\Users\Nicholas\.m2\repository\org\checkerframework\checker-qual\3.43.0\checker-qual-3.43.0.jar;C:\Users\Nicholas\.m2\repository\com\google\errorprone\error_prone_annotations\2.28.0\error_prone_annotations-2.28.0.jar;C:\Users\Nicholas\.m2\repository\com\google\j2objc\j2objc-annotations\3.0.0\j2objc-annotations-3.0.0.jar;C:\Users\Nicholas\.m2\repository\com\google\code\gson\gson\2.11.0\gson-2.11.0.jar;C:\Users\Nicholas\.m2\repository\org\joml\joml\1.10.8\joml-1.10.8.jar;C:\Users\Nicholas\.m2\repository\net\md-5\bungeecord-chat\1.21-R0.2\bungeecord-chat-1.21-R0.2.jar;C:\Users\Nicholas\.m2\repository\org\yaml\snakeyaml\2.2\snakeyaml-2.2.jar;"/>
     <property name="sun.cpu.endian" value="little"/>
@@ -30,7 +30,7 @@
     <property name="line.separator" value="&#10;"/>
     <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
     <property name="java.specification.name" value="Java Platform API Specification"/>
-    <property name="surefire.real.class.path" value="C:\Users\Nicholas\AppData\Local\Temp\surefire18172590654852477468\surefirebooter12634323217934709706.jar"/>
+    <property name="surefire.real.class.path" value="C:\Users\Nicholas\AppData\Local\Temp\surefire15762134506881257853\surefirebooter15474221456581201493.jar"/>
     <property name="user.script" value=""/>
     <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
     <property name="java.runtime.version" value="17.0.13+11-LTS"/>

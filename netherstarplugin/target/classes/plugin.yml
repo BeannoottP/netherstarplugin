@@ -7,6 +7,8 @@ permissions:
   permission.op:
     description: "Op perms to edit plugin rules"
     default: op
+  everyone:
+    default: true
 
 commands:
   netherstar:
@@ -15,3 +17,8 @@ commands:
     aliases: [ns]
     permission: permission.op
     permission-message: "You do not have permission to use this command"
+  top:
+    description: "Teleports to highest block Y at current location"
+    usage: "/<command>"
+    aliases: [t]
+    permission: everyone

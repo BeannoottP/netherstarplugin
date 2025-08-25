@@ -170,6 +170,18 @@ public class EventListener implements Listener {
     //if the player is ns player, and exits overworld, announce to the game
     @EventHandler
     public static void onPortalEntrance(PlayerPortalEvent event) {
+        if(event.getTo().getWorld().getEnvironment() == Environment.NORMAL) {
+            Player p = event.getPlayer();
+            for(ItemStack item : p.getInventory().getContents()) {
+                if(item == null) {continue;}
+                if(item.getType() != Material.COMPASS) {continue;}
+                if(item.getType() == Material.COMPASS) {
+                    p.getInventory().remove(Material.COMPASS);
+                    p.getInventory().addItem(new ItemStack(Material.COMPASS));
+                }
+            }
+        }
+
         if (event.getPlayer() != NetherStar.NSPLAYER && event.getTo().getWorld().getEnvironment() != Environment.NORMAL && NetherStar.NSPLAYER.getWorld().getEnvironment() == event.getTo().getWorld().getEnvironment()) {
             int x_coord = NetherStar.NSPLAYER.getLocation().getBlockX();
             int y_coord = NetherStar.NSPLAYER.getLocation().getBlockY();
@@ -186,7 +198,7 @@ public class EventListener implements Listener {
         
         if (event.getTo().getWorld().getEnvironment() != Environment.NORMAL) {
             NetherStar.playSoundGlobal(NetherStar.portal);
-            String dimension = NetherStar.NSPLAYER.getWorld().getEnvironment().name();
+            String dimension = event.getTo().getWorld().getEnvironment().toString();
             Bukkit.broadcastMessage(NetherStar.NSPLAYER.getName() + " has used a portal at " + ChatColor.of(Color.RED) + "" + ChatColor.BOLD +
                                     event.getFrom().getBlockX() + " " + event.getFrom().getBlockY() +  " " + event.getFrom().getBlockZ() + ChatColor.RESET + 
                                     " to enter the " + ChatColor.of(Color.RED) + "" + ChatColor.BOLD + plugin.dimensionchange(dimension));
@@ -390,6 +402,7 @@ public class EventListener implements Listener {
                 event.getPlayer().sendMessage(NetherStar.NSPLAYER.getDisplayName() + "is not in the nether");
                 compassmeta.setLodestone(NetherStar.NSLOCATION_NETHER);
                 event.getItem().setItemMeta(compassmeta);
+                return;
             }
             compassmeta.setLodestone(NetherStar.NSPLAYER.getLocation());
             compassmeta.setLodestoneTracked(false);
