@@ -46,6 +46,8 @@ import org.bukkit.plugin.java.JavaPlugin;
  * improve loot drops to make people wanna hold the star
  * add world border to stop people from running so much, make it shrink to sudden death
  * change keep inventory to 40% of everything except for pickaxe, axe, shovel, sword, and food
+ * change nether compass to always update wwhile moving
+ * prestart adventure mode
  * 
  */
 public class NetherStar extends JavaPlugin
