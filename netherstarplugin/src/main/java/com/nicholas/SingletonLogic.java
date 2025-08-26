@@ -13,6 +13,7 @@ import java.util.Collection;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Sound;
+import org.bukkit.boss.BossBar;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
@@ -96,6 +97,12 @@ public class SingletonLogic {
     public void sanityChecker() {
         if(sanityCheckDisable) {return;}
         if(NetherStar.NSPLAYER == null) {return;}
+        if(NetherStar.NSPLAYER.getInventory().getItem(EquipmentSlot.OFF_HAND) != null) {
+            if(NetherStar.NSPLAYER.getInventory().getItem(EquipmentSlot.OFF_HAND).getType() == Material.NETHER_STAR) {
+                NetherStar.NSPLAYER.sendMessage("You cannot move the nether star to your off hand");
+                NetherStar.NSPLAYER.getInventory().setItemInOffHand(new ItemStack(Material.AIR));
+            }
+        }
         if(NetherStar.NSPLAYER.getInventory().containsAtLeast(netherstaritemstack, 2)) {
             //might be a little slow but prevents more thaan 1 netherstar
             NetherStar.NSPLAYER.sendMessage("You have at least 2 stars");
@@ -129,15 +136,17 @@ public class SingletonLogic {
         if(item.toString().toLowerCase().contains("pickaxe")) {return true;}
         if(item.toString().toLowerCase().contains("shovel")) {return true;}
         if(item.toString().toLowerCase().contains("hoe")) {return true;}
-        if(item.toString().toLowerCase().contains("ore")) {return true;}
-        if(item.toString().toLowerCase().contains("ingot")) {return true;}
-        if(item.toString().toLowerCase().contains("raw")) {return true;}
+        //if(item.toString().toLowerCase().contains("ore")) {return true;}
+        //if(item.toString().toLowerCase().contains("ingot")) {return true;}
+        //if(item.toString().toLowerCase().contains("raw")) {return true;}
         if(item.toString().toLowerCase().contains("cooked")) {return true;}
+        if(item.toString().toLowerCase().contains("bread")) {return true;}
         if(item.toString().toLowerCase().contains("sword")) {return true;}
-        if(item.toString().toLowerCase().contains("chestplate")) {return true;}
-        if(item.toString().toLowerCase().contains("leggings")) {return true;}
-        if(item.toString().toLowerCase().contains("helmet")) {return true;}
-        if(item.toString().toLowerCase().contains("boots")) {return true;}
+        //if(item.toString().toLowerCase().contains("chestplate")) {return true;}
+        //if(item.toString().toLowerCase().contains("leggings")) {return true;}
+        //if(item.toString().toLowerCase().contains("helmet")) {return true;}
+        //if(item.toString().toLowerCase().contains("boots")) {return true;}
         return false;
     }
+
 }

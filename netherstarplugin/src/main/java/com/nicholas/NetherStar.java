@@ -11,6 +11,8 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Sound;
+import org.bukkit.World;
+import org.bukkit.entity.Boss;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventPriority;
@@ -19,7 +21,16 @@ import org.bukkit.event.Listener;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import org.bukkit.scoreboard.Criteria;
+import org.bukkit.scoreboard.DisplaySlot;
+import org.bukkit.scoreboard.Objective;
+import org.bukkit.scoreboard.Score;
+import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.WorldBorder;
+import org.bukkit.boss.BarColor;
+import org.bukkit.boss.BarStyle;
+import org.bukkit.boss.BossBar;
+import org.bukkit.Server;
 
 import net.md_5.bungee.api.ChatColor;
 
@@ -42,12 +53,13 @@ import org.bukkit.plugin.java.JavaPlugin;
  * figure out what to do if nether star player leaves the game
  * 
  * UPDATED TODO
- * fix duping nether stars (update sanity checker?)
+ * fix duping nether stars (update sanity checker?) 
+ * off hand glitch DONE 
  * improve loot drops to make people wanna hold the star
- * add world border to stop people from running so much, make it shrink to sudden death
- * change keep inventory to 40% of everything except for pickaxe, axe, shovel, sword, and food
- * change nether compass to always update wwhile moving
- * prestart adventure mode
+ * add world border to stop people from running so much, make it shrink to sudden death DONE
+ * change keep inventory to 40% of everything except for pickaxe, axe, shovel, sword, and food DONE
+ * change nether compass to always update wwhile moving DONE
+ * prestart adventure mode DONE
  * 
  */
 public class NetherStar extends JavaPlugin
@@ -58,8 +70,12 @@ public class NetherStar extends JavaPlugin
   //sounds
   public static final Sound firework = Sound.ENTITY_FIREWORK_ROCKET_LARGE_BLAST;
   public static final Sound witherDeath = Sound.ENTITY_WITHER_DEATH;
+  public static final Sound dragongrowl = Sound.ENTITY_ENDER_DRAGON_GROWL;
   public static final Sound ding = Sound.ENTITY_EXPERIENCE_ORB_PICKUP;
   public static final Sound portal = Sound.BLOCK_PORTAL_TRIGGER;
+  public static final Sound enderdragdeath = Sound.ENTITY_ENDER_DRAGON_DEATH;
+  public static final Sound musiccat = Sound.MUSIC_DISC_CAT;
+  public static final Sound musicstal = Sound.MUSIC_DISC_STAL;
 
   //the player currently holding the nether star. should only be null if no one is holding nether star
   public static Player NSPLAYER = null;
@@ -75,7 +91,24 @@ public class NetherStar extends JavaPlugin
 
   public static int ID_Start;
 
+  public static int ID_timer;
+
+  public static int timer = 10800;
+  //public static int timer = 80;
+
   public boolean startcode = false;
+
+  public boolean winCondition = false;
+
+  public WorldBorder worldBorder;
+
+  public static BossBar bossBar;
+
+  public Scoreboard scoreboard;
+
+  public Objective timerDisplay;
+
+  public ArrayList<Player> realPlayers = new ArrayList<>();
   
 
   //used to run methods in singletonlogic class
@@ -114,6 +147,14 @@ public class NetherStar extends JavaPlugin
         }
     }, 0L, 1L); // Run every tick
 
+    //pregame start state
+    plugin.stopMove = true;
+    worldBorder = Bukkit.getWorld("world").getWorldBorder();
+    Location spawnlocation = Bukkit.getServer().getWorld("world").getSpawnLocation();
+    worldBorder.setCenter(spawnlocation);
+    worldBorder.setSize(50);
+
+
   }
 
   public void onDisable()
@@ -145,7 +186,6 @@ public class NetherStar extends JavaPlugin
       public void run() {
         if(startcode) {
           Collection players = Bukkit.getServer().getOnlinePlayers();
-          ArrayList<Player> realPlayers = new ArrayList<>();
           for (Object p : players) {
             if (p instanceof Player) {
               realPlayers.add((Player) p);
@@ -157,9 +197,15 @@ public class NetherStar extends JavaPlugin
           NSPLAYER = firstReciever;
           NSLOCATION = firstReciever.getLocation();
           plugin.potionEffects();
-
-
+          worldBorder.setSize(3000);
+          worldBorder.setSize(400, 10800);
+          bossBar = (BossBar) Bukkit.createBossBar(NSPLAYER.getDisplayName() + " has the star", BarColor.BLUE, BarStyle.SOLID);
+          for(Object p : players) {
+            bossBar.addPlayer((Player)p);
+          }
+          scoreBoard();
           Bukkit.broadcastMessage("The Nether Star Game has started! " + ChatColor.of(Color.CYAN) +  "" + ChatColor.BOLD + NSPLAYER.getName() + ChatColor.RESET + " has been given the star! Use your compass to track them");
+
           startcode = false;
         }
         else {
@@ -169,7 +215,49 @@ public class NetherStar extends JavaPlugin
       }
     }, 201, 20);
 
-
+  ID_timer = Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(this, new Runnable() {
+      public void run() {
+        if(timer == 7200) {
+          Bukkit.broadcastMessage(ChatColor.BOLD + "" + ChatColor.RED + "There are 2 HOURS remaining");
+          playSoundGlobal(dragongrowl);
+        }
+        if(timer == 3600) {
+          Bukkit.broadcastMessage(ChatColor.BOLD + "" + ChatColor.RED + "There is 1 HOUR remaining");
+          playSoundGlobal(dragongrowl);
+        }
+        if(timer == 1800) {
+          Bukkit.broadcastMessage(ChatColor.BOLD + "" + ChatColor.RED + "There are 30 MINUTES remaining");
+          playSoundGlobal(dragongrowl);
+        }
+        if(timer == 300) {
+          Bukkit.broadcastMessage(ChatColor.BOLD + "" + ChatColor.RED + "There are 5 MINUTES remaining");
+          playSoundGlobal(dragongrowl);
+        }
+        if(timer == 60) {
+          Bukkit.broadcastMessage(ChatColor.BOLD + "" + ChatColor.RED + "There is 1 MINUTE remaining");
+          playSoundGlobal(dragongrowl);
+        }
+        if(timer < 11 && timer > 0) {
+          Bukkit.broadcastMessage(ChatColor.RED + "" + ChatColor.BOLD + timer);
+          playSoundGlobal(ding);
+          
+        }
+        if(timer == 0) {
+          winCondition = true;
+          plugin.stopMove = true;
+          if(NSPLAYER == null) {
+            Bukkit.getWorld("world").playSound(NSLOCATION, musicstal, 100, 1);
+            Bukkit.broadcastMessage("Wow, no one won, you guys suck. You are all tonights biggest loser.");
+          }
+          playSoundGlobal(enderdragdeath);
+          Bukkit.getWorld("world").playSound(NSLOCATION, musiccat, 100, 1);
+          Bukkit.broadcastMessage(ChatColor.AQUA + "" + ChatColor.BOLD + NSPLAYER.getDisplayName() + " IS THE WINNER!!!");
+          Bukkit.getScheduler().cancelTask(ID_timer);
+        }
+          updateScoreboard();
+          timer--;
+      }
+    }, 201, 20);
 
     //sanity checker
     Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(this, new Runnable() {
@@ -205,6 +293,28 @@ public class NetherStar extends JavaPlugin
 
 
 
+  }
+
+  public void scoreBoard() {
+    scoreboard = Bukkit.getServer().getScoreboardManager().getNewScoreboard();
+    timerDisplay = scoreboard.registerNewObjective("timer", Criteria.DUMMY , ChatColor.RED + "Nether Star");
+    timerDisplay.setDisplaySlot(DisplaySlot.SIDEBAR);
+    Score timerScore = timerDisplay.getScore(ChatColor.GREEN + "Time Left:" + ChatColor.RESET + timer);
+    timerScore.setScore(2);
+    LOGGER.info("Scoreboard created!");
+  }
+
+  public void updateScoreboard() {
+    for (String entry : scoreboard.getEntries()) {
+        scoreboard.resetScores(entry);
+    }
+
+    Score timerScore = timerDisplay.getScore(/*ChatColor.GREEN + "Time Left: " + ChatColor.RESET + */ ((timer/60)/60) + "hrs " + (timer/60%60) + "mins " + (timer%60) + "s");
+    timerScore.setScore(0);
+
+    for (Player p : Bukkit.getOnlinePlayers()) {
+      p.setScoreboard(scoreboard);
+    }
   }
 
   // if this is broken then god save us all
