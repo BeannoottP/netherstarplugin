@@ -90,34 +90,36 @@ public class EventListener implements Listener {
             for (Player p : Bukkit.getServer().getOnlinePlayers()) {
                 p.setCompassTarget(NetherStar.NSLOCATION);
             }
+
             if(event.getPlayer().getWorld().getEnvironment() != Environment.NETHER) {return;}
+
             PlayerInventory playerInventory = event.getPlayer().getInventory();
-            int i = 0;
-            for(ItemStack item : playerInventory) {
-                if(item == null) {
-                    i++;
-                    continue;
-                }
-                if(item.getType().equals(Material.COMPASS)) {
-                    CompassMeta compassmeta = (CompassMeta) event.getPlayer().getInventory().getItem(i).getItemMeta();
-                    if(NetherStar.NSPLAYER == null) {
-                        compassmeta.setLodestone(NetherStar.NSLOCATION_NETHER);
-                        compassmeta.setLodestoneTracked(false);
-                        event.getPlayer().getInventory().getItem(i).setItemMeta(compassmeta);
-                        return;
-                    }
-                    if(NetherStar.NSPLAYER.getWorld().getEnvironment() == Environment.NORMAL) {
-                        compassmeta.setLodestone(NetherStar.NSLOCATION_NETHER);
-                        compassmeta.setLodestoneTracked(false);
-                        event.getPlayer().getInventory().getItem(i).setItemMeta(compassmeta);
-                        return;
-                    }
-                    compassmeta.setLodestone(NetherStar.NSPLAYER.getLocation());
-                    compassmeta.setLodestoneTracked(false);
-                    event.getPlayer().getInventory().getItem(i).setItemMeta(compassmeta);
-                }
-                i++;
+            int compassindex = playerInventory.first(new ItemStack(Material.COMPASS));
+
+            if(compassindex == -1) {
+                playerInventory.addItem(new ItemStack(Material.COMPASS));
+                return;
             }
+
+            CompassMeta compassmeta = (CompassMeta) event.getPlayer().getInventory().getItem(compassindex).getItemMeta();
+
+            if(NetherStar.NSPLAYER == null) {
+                compassmeta.setLodestone(NetherStar.NSLOCATION_NETHER);
+                compassmeta.setLodestoneTracked(false);
+                event.getPlayer().getInventory().getItem(compassindex).setItemMeta(compassmeta);
+                return;
+            }
+
+            if(NetherStar.NSPLAYER.getWorld().getEnvironment() == Environment.NORMAL) {
+                compassmeta.setLodestone(NetherStar.NSLOCATION_NETHER);
+                compassmeta.setLodestoneTracked(false);
+                event.getPlayer().getInventory().getItem(compassindex).setItemMeta(compassmeta);
+                return;
+            }
+
+            compassmeta.setLodestone(NetherStar.NSPLAYER.getLocation());
+            compassmeta.setLodestoneTracked(false);
+            event.getPlayer().getInventory().getItem(compassindex).setItemMeta(compassmeta);
         }
 
         //so when the nether star player moves the sanity check returns to false
@@ -206,16 +208,12 @@ public class EventListener implements Listener {
     public static void onPortalEntrance(PlayerPortalEvent event) {
         if(event.getTo().getWorld().getEnvironment() == Environment.NORMAL) {
             Player p = event.getPlayer();
-            for(ItemStack item : p.getInventory().getContents()) {
-                if(item == null) {continue;}
-                if(item.getType() != Material.COMPASS) {continue;}
-                if(item.getType() == Material.COMPASS) {
-                    p.getInventory().remove(Material.COMPASS);
-                    p.getInventory().addItem(new ItemStack(Material.COMPASS));
-                }
-            }
+            p.getInventory().remove(Material.COMPASS);
+            p.getInventory().addItem(new ItemStack(Material.COMPASS));
         }
+
         if(NetherStar.NSPLAYER == null) {return;}
+
         if (event.getPlayer() != NetherStar.NSPLAYER && event.getTo().getWorld().getEnvironment() != Environment.NORMAL && NetherStar.NSPLAYER.getWorld().getEnvironment() == event.getTo().getWorld().getEnvironment()) {
             int x_coord = NetherStar.NSPLAYER.getLocation().getBlockX();
             int y_coord = NetherStar.NSPLAYER.getLocation().getBlockY();
@@ -342,16 +340,7 @@ public class EventListener implements Listener {
     @EventHandler
     public static void onPlayerRespawn(PlayerRespawnEvent event) {
         if (event.getPlayer().getInventory().contains(Material.COMPASS)) {
-            Player p = event.getPlayer();
-            for(ItemStack item : p.getInventory().getContents()) {
-                if(item == null) {continue;}
-                if(item.getType() != Material.COMPASS) {continue;}
-                if(item.getType() == Material.COMPASS) {
-                    p.getInventory().remove(Material.COMPASS);
-                    p.getInventory().addItem(new ItemStack(Material.COMPASS));
-                }
-            }
-            return;
+            event.getPlayer().getInventory().remove(Material.COMPASS);
         }
         event.getPlayer().getInventory().addItem(new ItemStack(Material.COMPASS));
     }
@@ -446,16 +435,27 @@ public class EventListener implements Listener {
             }
         }
         if(event.getPlayer().equals(NetherStar.NSPLAYER)) {return;}
+
         if(event.getPlayer().getWorld().getEnvironment() != Environment.NETHER) {return;}
+
         if(event.getItem() == null) {return;}
+
         if((event.getAction().equals(Action.RIGHT_CLICK_AIR) || event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) && event.getItem().getType().equals(Material.COMPASS)) {
             CompassMeta compassmeta = (CompassMeta) event.getItem().getItemMeta();
+
+            if(NetherStar.NSPLAYER == null) {
+                compassmeta.setLodestone(NetherStar.NSLOCATION_NETHER);
+                event.getItem().setItemMeta(compassmeta);
+                return;
+            }
+
             if(NetherStar.NSPLAYER.getWorld().getEnvironment() == Environment.NORMAL) {
                 event.getPlayer().sendMessage(NetherStar.NSPLAYER.getDisplayName() + "is not in the nether");
                 compassmeta.setLodestone(NetherStar.NSLOCATION_NETHER);
                 event.getItem().setItemMeta(compassmeta);
                 return;
             }
+
             compassmeta.setLodestone(NetherStar.NSPLAYER.getLocation());
             compassmeta.setLodestoneTracked(false);
             event.getItem().setItemMeta(compassmeta);

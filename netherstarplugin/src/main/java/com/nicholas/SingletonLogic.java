@@ -8,7 +8,9 @@ import static org.bukkit.potion.PotionEffect.INFINITE_DURATION;
 import java.awt.Event;
 import java.security.SignedObject;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -17,6 +19,7 @@ import org.bukkit.boss.BossBar;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 //THIS CLASS WAS CREATED TO RUN ANY LOGIC THAT NEEDS TO GO BETWEEN CLASSES
 
@@ -39,6 +42,12 @@ public class SingletonLogic {
     public boolean stopMove = false;
 
     public int slotIndex;
+
+    public ArrayList<Material> loottable = new ArrayList<Material>();
+    // what the loot pool should be : diamonds, iron, netherite, gold, golden apple, iron axe, diamond pickaxe, idk, bennett think of shit
+    public List<Material> loottableadd = Arrays.asList(Material.DIAMOND);
+
+
 
     //any potion effects not running through scheduler can be placed here
     public void potionEffects() {
@@ -148,5 +157,7 @@ public class SingletonLogic {
         //if(item.toString().toLowerCase().contains("boots")) {return true;}
         return false;
     }
+
+
 
 }
