@@ -1,0 +1,474 @@
+tier1:
+  tier: 0
+  drops:
+    iron_ingot: 
+      Material: Material.IRON_INGOT
+      lowdrop: 1
+      highdrop: 5
+      meta:
+      rarity: 4
+    golden_apple: 
+      Material: Material.GOLDEN_APPLE
+      lowdrop: 1
+      highdrop: 3
+      meta:
+      rarity: 2
+    bow: 
+      Material: Material.BOW
+      lowdrop: 1
+      highdrop: 1
+      meta: 
+      rarity: 2
+    arrows:
+      Material: Material.ARROW
+      lowdrop: 3
+      highdrop: 12
+      meta: 
+      rarity: 3
+    iron_axe: 
+      Material: Material.IRON_AXE
+      lowdrop: 1
+      highdrop: 1
+      meta:
+      rarity: 2
+    enchanting_table: 
+      Material: Material.ENCHANTING_TABLE
+      lowdrop: 1
+      highdrop: 1
+      meta:
+      rarity: 1
+    experience_bottle:
+      Material: Material.EXPERIENCE_BOTTLE
+      lowdrop: 3
+      highdrop: 15
+      meta:
+      rarity: 2
+    lapis:
+      Material: Material.LAPIS_LUZULI
+      lowdrop: 2
+      highdrop: 15
+      meta:
+      rarity: 2
+    enchanted_protbook:
+      Material: Material.ENCHANTED_BOOK
+      lowdrop: 1
+      highdrop: 1
+      meta:
+        enchant_book:
+          Enchantment: enchantment.PROTECTION
+          Level: 1
+          LevelRequirement: false
+      rarity: 1
+    enchanted_sharpbook:
+      Material: Material.ENCHANTED_BOOK
+      lowdrop: 1
+      highdrop: 1
+      meta:
+        enchant_book:
+          Enchantment: enchantment.SHARPNESS
+          Level: 2
+          LevelRequirement: false
+      rarity: 1
+    enchanted_fortbook:
+      Material: Material.ENCHANTED_BOOK
+      lowdrop: 1
+      highdrop: 1
+      meta:
+        enchant_book:
+          Enchantment: enchantment.FORTUNE
+          Level: 1
+          LevelRequirement: false
+      rarity: 1
+    diamond_helment:
+      Material: Material.DIAMOND_HELMET
+      lowdrop: 1
+      highdrop: 1
+      meta:
+      rarity: 1   
+    diamond_boots:
+      Material: Material.DIAMOND_BOOTS
+      lowdrop: 1
+      highdrop: 1
+      meta:
+      rarity: 1   
+    obsidian:
+      Material: Material.OBSIDIAN
+      lowdrop: 3
+      highdrop: 10
+      meta:
+      rarity: 1
+    water_bucket:
+      Material: Material.WATER_BUCKET
+      lowdrop: 1
+      highdrop: 1
+      meta:
+      rarity: 2
+    lava_bucket:
+      Material: Material.LAVA_BUCKET
+      lowdrop: 1
+      highdrop: 1
+      meta:
+      rarity: 2
+    ender_pearl:
+      Material: Material.ENDER_PEARL
+      lowdrop: 1
+      highdrop: 1
+      meta:
+      rarity: 1
+    diamond_pickaxe:
+      Material: Material.DIAMOND_PICKAXE
+      lowdrop: 1
+      highdrop: 1
+      meta:
+      rarity: 1
+    anvil:
+      Material: Material.ANVIL
+      lowdrop: 1
+      highdrop: 1
+      meta:
+      rarity: 2
+    totem:
+      Material: Material.TOTEM_OF_UNDYING
+      lowdrop: 1
+      highdrop: 1
+      meta:
+      rarity: 1
+
+tier2:
+  tier: 1
+  drops:
+    diamond: 
+      Material: Material.DIAMOND
+      lowdrop: 1
+      highdrop: 6
+      meta: 
+      rarity: 4
+    enchanted_bow: 
+      Material: Material.BOW
+      lowdrop: 1
+      highdrop: 1
+      meta: 
+        enchant: 
+          Enchantment: enchantment.POWER
+          Level: 2
+          LevelRequirement: false
+      rarity: 2
+    arrows:
+      Material: Material.ARROW
+      lowdrop: 3
+      highdrop: 12
+      meta: 
+      rarity: 3
+    enchanting_table: 
+      Material: Material.ENCHANTING_TABLE
+      lowdrop: 1
+      highdrop: 1
+      meta:
+      rarity: 1
+    experience_bottle:
+      Material: Material.EXPERIENCE_BOTTLE
+      lowdrop: 3
+      highdrop: 15
+      meta:
+      rarity: 2
+    lapis:
+      Material: Material.LAPIS_LUZULI
+      lowdrop: 2
+      highdrop: 15
+      meta:
+      rarity: 2
+    golden_apple: 
+      Material: Material.GOLDEN_APPLE
+      lowdrop: 1
+      highdrop: 3
+      meta:
+      rarity: 3
+    diamond_axe:
+      Material: Material.DIAMOND_AXE
+      lowdrop: 1
+      highdrop: 1
+      meta: 
+        enchant: 
+          Enchantment: enchantment.SHARPNESS
+          Level: 1
+          LevelRequirement: false
+      rarity: 1
+    trident:
+      Material: Material.TRIDENT
+      lowwdrop: 1
+      highdrop: 1
+      meta:
+      rarity: 1
+    totem:
+      Material: Material.TOTEM_OF_UNDYING
+      lowdrop: 1
+      highdrop: 1
+      meta:
+      rarity: 1
+    enchanted_protbook:
+      Material: Material.ENCHANTED_BOOK
+      lowdrop: 1
+      highdrop: 1
+      meta:
+        enchant_book:
+          Enchantment: enchantment.PROTECTION
+          Level: 2
+          LevelRequirement: false
+      rarity: 1
+    enchanted_sharpbook:
+      Material: Material.ENCHANTED_BOOK
+      lowdrop: 1
+      highdrop: 1
+      meta:
+        enchant_book:
+          Enchantment: enchantment.SHARPNESS
+          Level: 2
+          LevelRequirement: false
+      rarity: 1
+    enchanted_fortbook:
+      Material: Material.ENCHANTED_BOOK
+      lowdrop: 1
+      highdrop: 1
+      meta:
+        enchant_book:
+          Enchantment: enchantment.FORTUNE
+          Level: 3
+          LevelRequirement: false
+      rarity: 1
+    enchanted_firebook:
+      Material: Material.ENCHANTED_BOOK
+      lowdrop: 1
+      highdrop: 1
+      meta:
+        enchant_book:
+          Enchantment: enchantment.FIRE_ASPECT
+          Level: 1
+          LevelRequirement: false
+      rarity: 1   
+    diamond_leggings:
+      Material: Material.DIAMOND_LEGGINGS
+      lowdrop: 1
+      highdrop: 1
+      meta:
+      rarity: 1   
+    diamond_helment:
+      Material: Material.DIAMOND_HELMET
+      lowdrop: 1
+      highdrop: 1
+      meta:
+      rarity: 1   
+    diamond_boots:
+      Material: Material.DIAMOND_BOOTS
+      lowdrop: 1
+      highdrop: 1
+      meta:
+      rarity: 1   
+    obsidian:
+      Material: Material.OBSIDIAN
+      lowdrop: 6
+      highdrop: 10
+      meta:
+      rarity: 1
+    ender_pearl:
+      Material: Material.ENDER_PEARL
+      lowdrop: 1
+      highdrop: 1
+      meta:
+      rarity: 1
+    anvil:
+      Material: Material.ANVIL
+      lowdrop: 1
+      highdrop: 1
+      meta:
+      rarity: 2
+
+       
+tier3:
+  tier: 2
+  drops:
+    diamond: 
+      Material: Material.DIAMOND
+      lowdrop: 1
+      highdrop: 12
+      meta:
+      rarity: 4
+    enchanted_bow: 
+      Material: Material.BOW
+      lowdrop: 1
+      highdrop: 1
+      meta: 
+        enchant: 
+          Enchantment: enchantment.POWER
+          Level: 3
+          LevelRequirement: false
+      rarity: 2
+    arrows:
+      Material: Material.ARROW
+      lowdrop: 3
+      highdrop: 12
+      meta: 
+      rarity: 3
+    enchanting_table: 
+      Material: Material.ENCHANTING_TABLE
+      lowdrop: 1
+      highdrop: 1
+      meta:
+      rarity: 1
+    experience_bottle:
+      Material: Material.EXPERIENCE_BOTTLE
+      lowdrop: 3
+      highdrop: 15
+      meta:
+      rarity: 3
+    lapis:
+      Material: Material.LAPIS_LUZULI
+      lowdrop: 2
+      highdrop: 15
+      meta:
+      rarity: 2
+    golden_apple: 
+      Material: Material.GOLDEN_APPLE
+      lowdrop: 1
+      highdrop: 3
+      meta:
+      rarity: 4
+    diamond_axe:
+      Material: Material.DIAMOND_AXE
+      lowdrop: 1
+      highdrop: 1
+      meta: 
+        enchant: 
+          Enchantment: enchantment.SHARPNESS
+          Level: 1
+          LevelRequirement: false
+      rarity: 2
+    trident:
+      Material: Material.TRIDENT
+      lowwdrop: 1
+      highdrop: 1
+      meta:
+        enchant:
+          Enchantment: enchantment.LOYALTY
+          Leve: 3
+          LevelRequirement: false
+      rarity: 1
+    netherite: 
+      Material: Material.NETHERITE_INGOT
+      lowdrop: 1
+      highdrop: 1
+      meta:
+      rarity: 2
+    smithing_template: 
+      Material: Material.NETHERITE_UPGRADE_SMITHING_TEMPLATE
+      lowdrop: 1
+      highdrop: 1
+      meta:
+      rarity: 1
+    mace: 
+      Material: Material.MACE
+      lowdrop: 1
+      highdrop: 1
+      meta:
+      rarity: 1
+    totem:
+      Material: Material.TOTEM_OF_UNDYING
+      lowdrop: 1
+      highdrop: 1
+      meta:
+      rarity: 1
+    enchanted_protbook:
+      Material: Material.ENCHANTED_BOOK
+      lowdrop: 1
+      highdrop: 1
+      meta:
+        enchant_book:
+          Enchantment: enchantment.PROTECTION
+          Level: 3
+          LevelRequirement: false
+      rarity: 1
+    enchanted_sharpbook:
+      Material: Material.ENCHANTED_BOOK
+      lowdrop: 1
+      highdrop: 1
+      meta:
+        enchant_book:
+          Enchantment: enchantment.SHARPNESS
+          Level: 3
+          LevelRequirement: false
+      rarity: 1
+    enchanted_fortbook:
+      Material: Material.ENCHANTED_BOOK
+      lowdrop: 1
+      highdrop: 1
+      meta:
+        enchant_book:
+          Enchantment: enchantment.FORTUNE
+          Level: 3
+          LevelRequirement: false
+      rarity: 1   
+    enchanted_firebook:
+      Material: Material.ENCHANTED_BOOK
+      lowdrop: 1
+      highdrop: 1
+      meta:
+        enchant_book:
+          Enchantment: enchantment.FIRE_ASPECT
+          Level: 2
+          LevelRequirement: false
+      rarity: 1   
+    netherite_sword:
+      Material: Material.NETHERITE_SWORD
+      lowdrop: 1
+      highdrop: 1
+      meta:
+      rarity: 1   
+    diamond_chestplate:
+      Material: Material.DIAMOND_CHESTPLATE
+      lowdrop: 1
+      highdrop: 1
+      meta:
+      rarity: 1   
+    diamond_leggings:
+      Material: Material.DIAMOND_LEGGINGS
+      lowdrop: 1
+      highdrop: 1
+      meta:
+      rarity: 1   
+    diamond_helment:
+      Material: Material.DIAMOND_HELMET
+      lowdrop: 1
+      highdrop: 1
+      meta:
+        enchant:
+          Enchantment: enchantment.PROTECTION
+          Level: 3
+          LevelRequirement: false
+      rarity: 1   
+    diamond_boots:
+      Material: Material.DIAMOND_BOOTS
+      lowdrop: 1
+      highdrop: 1
+      meta:
+        enchant:
+          Enchantment: enchantment.PROTECTION
+          Level: 3
+          LevelRequirement: false
+      rarity: 1   
+    ender_pearl:
+      Material: Material.ENDER_PEARL
+      lowdrop: 1
+      highdrop: 1
+      meta:
+      rarity: 1
+    enchanted_golden_apple:
+      Material: Material.ENCHANTED_GOLDEN_APPLE
+      lowdrop: 1
+      highdrop: 1
+      meta:
+      rarity: 1
+    anvil:
+      Material: Material.ANVIL
+      lowdrop: 1
+      highdrop: 1
+      meta:
+      rarity: 2
