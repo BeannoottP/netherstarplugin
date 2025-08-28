@@ -1,6 +1,7 @@
 package com.nicholas;
 
 import java.awt.Color;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.EventListener;
@@ -109,6 +110,8 @@ public class NetherStar extends JavaPlugin
   public Objective timerDisplay;
 
   public ArrayList<Player> realPlayers = new ArrayList<>();
+
+  public LootTable lootTable;
   
 
   //used to run methods in singletonlogic class
@@ -123,7 +126,10 @@ public class NetherStar extends JavaPlugin
     getCommand("top").setExecutor(c);
 
     loadListeners(new com.nicholas.EventListener());
-    
+
+    lootTable = new LootTable(3);
+    lootTable.loadFromFile();
+
     //tps counter that google ai spit out
     Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(this, new Runnable() {
         long lastTickTime = System.currentTimeMillis();
@@ -248,6 +254,8 @@ public class NetherStar extends JavaPlugin
           if(NSPLAYER == null) {
             Bukkit.getWorld("world").playSound(NSLOCATION, musicstal, 100, 1);
             Bukkit.broadcastMessage("Wow, no one won, you guys suck. You are all tonights biggest loser.");
+            Bukkit.getScheduler().cancelTask(ID_timer);
+            return;
           }
           playSoundGlobal(enderdragdeath);
           Bukkit.getWorld("world").playSound(NSLOCATION, musiccat, 100, 1);

@@ -52,8 +52,8 @@ public class SingletonLogic {
     //any potion effects not running through scheduler can be placed here
     public void potionEffects() {
         if(NetherStar.NSPLAYER != null) {
-            //NetherStar.NSPLAYER.addPotionEffect(new PotionEffect(PotionEffectType.RESISTANCE, INFINITE_DURATION, 0, true));
-            NetherStar.NSPLAYER.addPotionEffect(new PotionEffect(PotionEffectType.HASTE, INFINITE_DURATION, 0, true));
+            NetherStar.NSPLAYER.addPotionEffect(new PotionEffect(PotionEffectType.RESISTANCE, INFINITE_DURATION, 0, true));
+            NetherStar.NSPLAYER.addPotionEffect(new PotionEffect(PotionEffectType.HASTE, INFINITE_DURATION, 1, true));
             NetherStar.NSPLAYER.setMaxHealth(24);
         }
     }
@@ -61,7 +61,7 @@ public class SingletonLogic {
     //resets all potion effects after ns player dies
     public void clearPotionEffects() {
         if(NetherStar.NSPLAYER != null) {
-            //NetherStar.NSPLAYER.removePotionEffect(PotionEffectType.RESISTANCE);
+            NetherStar.NSPLAYER.removePotionEffect(PotionEffectType.RESISTANCE);
             NetherStar.NSPLAYER.removePotionEffect(PotionEffectType.HASTE);
             NetherStar.NSPLAYER.setMaxHealth(20);
         }
