@@ -111,7 +111,7 @@ public class NetherStar extends JavaPlugin
 
   public ArrayList<Player> realPlayers = new ArrayList<>();
 
-  public LootTable lootTable;
+  public static LootTable lootTable;
   
 
   //used to run methods in singletonlogic class
@@ -124,6 +124,7 @@ public class NetherStar extends JavaPlugin
     Commands c = new Commands(this);
     getCommand("netherstar").setExecutor(c);
     getCommand("top").setExecutor(c);
+    getCommand("drop").setExecutor(c);
 
     loadListeners(new com.nicholas.EventListener());
 

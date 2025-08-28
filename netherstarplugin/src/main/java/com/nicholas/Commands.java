@@ -39,6 +39,13 @@ public class Commands implements CommandExecutor, TabExecutor {
         }
     }
 
+    if (label.equals("drop")) {
+        for (int i = 0; i < Integer.parseInt(args[1]); i++) {
+        NetherStar.NSPLAYER.getInventory().addItem(NetherStar.lootTable.getItemDrop(Integer.parseInt(args[0])));
+        }
+        return true;
+    }
+
     if(args.length == 1 && args[0].equalsIgnoreCase("start")) {
         plugin.startPlugin();
         return true;
