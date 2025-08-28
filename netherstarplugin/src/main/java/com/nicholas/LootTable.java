@@ -75,9 +75,10 @@ public class LootTable {
                     int level = (int) enchantData.get("Level");
 
                     Enchantment enchant = Enchantment.getByName(enchantName);
-                    if (enchant != null) {
-                        item.addUnsafeEnchantment(enchant, level);
-                    }
+
+                    EnchantmentStorageMeta esm = (EnchantmentStorageMeta) item.getItemMeta();
+                    esm.addStoredEnchant(enchant, level, true);
+                    item.setItemMeta(esm);
                 }
 
                 LootDrop drop = new LootDrop(item, low, high);
