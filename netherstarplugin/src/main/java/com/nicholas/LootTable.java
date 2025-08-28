@@ -68,7 +68,7 @@ public class LootTable {
                     }
                 }
                 if (meta != null && meta.containsKey("enchant_book")) {
-                    Map<String, Object> enchantData = (Map<String, Object>) meta.get("enchant");
+                    Map<String, Object> enchantData = (Map<String, Object>) meta.get("enchant_book");
 
                     String enchantName = ((String) enchantData.get("Enchantment"))
                                             .replace("enchantment.", "").toUpperCase();
